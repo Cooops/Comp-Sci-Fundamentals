@@ -4,8 +4,6 @@ This will serve as a repository for publically measuring my progress learning Co
 
 ## Synopsis
 
----
-
 I want to improve my fundamental knowledge over the course of the next 6-12 months, rounding out any core Computer Science (see Task List below for specifics) related information I am lacking. This will be a long-term venture with plenty of notes, videos, articles, and of course code samples along the way. I will start out coding in Python, but will likely blend in C-related langauges down the line.
 
 I am doing this for myself first and foremost; not anyone else.
@@ -14,15 +12,11 @@ I am doing this for myself first and foremost; not anyone else.
 
 ## Inspiration (videos & text)
 
----
-
 * http://www.aaronsw.com/weblog/dweck
 * https://medium.freecodecamp.org/why-i-studied-full-time-for-8-months-for-a-google-interview-cc662ce9bb13
 * https://www.youtube.com/watch?v=YJZCUhxNCv8
 
 ## Task List (will be constantly expanded upon and updated)
-
----
 
 * Low-level knowledge
 * Data Structures
@@ -33,8 +27,6 @@ I am doing this for myself first and foremost; not anyone else.
 * Database Architecture
 
 ## [1] **Low-level Knowledge**
-
----
 
 1. **[How a CPU works](https://www.youtube.com/watch?v=FZGugFqdr60&feature=youtu.be)**
 2. **[How a CPU executes a program](https://www.youtube.com/watch?v=XM4lGflQFvA)**
@@ -50,11 +42,7 @@ I am doing this for myself first and foremost; not anyone else.
 ## [2] **Data Structures**
 1. WIP...
 
----
-
 ## [3] **Algorithms**
-
----
 
 <details>
 <summary><b>Asymptotic Notation</b></summary>
