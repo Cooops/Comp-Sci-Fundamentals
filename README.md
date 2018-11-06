@@ -68,9 +68,9 @@ Fast or efficient algorithms =/= a measurement in real time (seconds, minutes) d
 I magine counting the number of characters in a string the simplest way by walking through the whole string, letter by letter, and adding 1 to a counter for each character.
 
 ```
-def strng_length(strng):
+def string_length(strng):
     counter = 0
-    for character in string:
+    for character in strng:
         counter += 1
     return counter
 ```
@@ -80,7 +80,7 @@ This algorithm is said to run in linear time with respect to the number of chara
 Lets says the above method isn't fast enough, so you may chose to store the number of characters in the string in a variable _len_, which you can then compare against instead of the checking the string itself everytime.
 
 ```
-def strng_length(strng):
+def string_length(strng):
     strngLen = len(strng)
     return strngLen
 ```
@@ -103,7 +103,6 @@ def all_combinations(array):
 This function (algorithm) is considered O(n^2) as every input requires us to do n more operations; n*n == n^2. Thus, **O(n^2) are asymptotically slower than O(n) algorithms**, but this doesn't mean they always run faster, even in the same environment and the same hardware. Maybe for small input sizes O(n) could be faster, but **as you approach towards infinity O(n^2) will eventually overtake the O(n) algorithm**; just like any quadratic mathematical function will eventually overtake any linear function, no matter how much of a head start the linear function starts off with.
 
 Another asymptotic complexity is logarithmic time; **O(log n)**. An example of an algorithm that runs this quickly is the classic **Binary Search Algorithm** for finding an element in an already sorted list on elements.
-
 
 Let's say we are looking for the number 3 in the following array of integers [1, 2, 3, 4, 5, 6, 7].
 
