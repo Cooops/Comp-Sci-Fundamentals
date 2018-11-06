@@ -6,6 +6,8 @@ def string_length(strng):
 
     20 characters take twice as long as 10 characters, etc. 
     As you increase the number of characters, the runtime will increase linearly with the input length.
+    
+    O(n) steps = O(n) in total.
     """
     counter = 0
     for character in strng:
