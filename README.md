@@ -1,6 +1,6 @@
-# **Computer Science Fundamentals**
+# **Computer Science Fundamentals** (work in progress)
 
-This will serve as a repository for publically measuring my progress learning Computer Science fundamentals.
+This will serve as a repository for publically measuring my progress both learning and brushing up on Computer Science fundamentals.
 
 ## Synopsis
 
@@ -19,12 +19,13 @@ I am doing this for myself first and foremost; not anyone else.
 ## Task List (will be constantly expanded upon and updated)
 
 * Low-level knowledge
+* Operating Systems
 * Data Structures
 * Algorithms
-* Operating Systems
 * Object-Oriented Design
 * System Design (solving problems at scale)
-* Database Architecture
+* Databases
+* Web Apps & Servers
 
 ## [1] **Low-level Knowledge**
 
@@ -41,7 +42,6 @@ I am doing this for myself first and foremost; not anyone else.
 
 ## [2] **Data Structures**
 
-
 ## [3] **Algorithms**
 
 <details>
@@ -52,7 +52,7 @@ I am doing this for myself first and foremost; not anyone else.
 ---
 Asymptotic Notation, aka Big O notation, is the most common metric for calculating time complexity. In simpler terms, Big O notation is how programmers talk about algorithms. A functions Big O notation is determined by how it responds to different inputs. How much slower is it if we feed in a list of 1,000,000 elements instead of 1? Big O describes the number of steps it takes to reach the base case.
 
-### Videos
+### Videos & Links
 
 ---
 
@@ -63,7 +63,7 @@ Asymptotic Notation, aka Big O notation, is the most common metric for calculati
 
 ---
 Fast or efficient algorithms =/= a measurement in real time (seconds, minutes) due to how much hardware varies, or that a user might be running their program through a different piece of software, etc. Thus, the uniform way compare the algorithm is to measure the Asymptotic Complexity of a program, and to use the notation (Big O (or just O)) for describing this.
-**How fast a programs runtime grows asymptotically == as the size of your inputs increase towards infinity, how does the runtime of your program grow?**.
+**How fast a programs runtime grows asymptotically == as the size of your inputs increase towards infinity, how does the runtime of your program grow?**
 
 I magine counting the number of characters in a string the simplest way by walking through the whole string, letter by letter, and adding 1 to a counter for each character.
 
@@ -81,15 +81,15 @@ Lets says the above method isn't fast enough, so you may chose to store the numb
 
 ```
 def string_length(strng):
-    strngLen = len(strng)
-    return strngLen
+    counter = len(strng)
+    return counter
 ```
 
-**Accessing len() is considered an asymptotically constant time operation, or O(1)**. What this means is no matter how big your input is it will always take you the same amount of time to compute things (one step). This doesn't have to mean your code runs in one step; if it doesn't change with the size of inputs then it is still asymptotically constant. There are always drawbacks though and in this case you have to spend extra memory space on your computer to store the variable (and the storage of the variable itself). **Constant time is considered the best case scenario for a function.**
+**Accessing len() is considered an asymptotically constant time operation, or O(1)**. What this means is no matter how big your input is it will always take you the same amount of time to compute things. This doesn't have to mean your code runs in one step; if it doesn't change with the size of inputs then it is still asymptotically constant. There are always drawbacks though and in this case you have to spend extra memory space on your computer to store the variable (and the storage of the variable itself). **Constant time is considered the best case scenario for a function.**
 
 ![Big O comparisons](https://justin.abrah.ms/static/images/runtime_comparison.png)
 
-There are many different Big O runtimes to measure algorithms with. One area you may run into **O(n^2)** notations is with combinations and is especially useful when it comes to data structures. See the following code example which would match every item in the list with every other item in the list:
+There are many different Big O runtimes to measure algorithms with. One area you may run into **O(n^2)** notations is with combinations and it is especially useful when it comes to data structures. See the following code example which would match every item in the list with every other item in the list:
 
 ```
 def all_combinations(array):
@@ -100,7 +100,7 @@ def all_combinations(array):
     return results
 ```
 
-This function (algorithm) is considered O(n^2) as every input requires us to do n more operations; n*n == n^2. Thus, **O(n^2) are asymptotically slower than O(n) algorithms**, but this doesn't mean they always run faster, even in the same environment and the same hardware. Maybe for small input sizes O(n) could be faster, but **as you approach towards infinity O(n^2) will eventually overtake the O(n) algorithm**; just like any quadratic mathematical function will eventually overtake any linear function, no matter how much of a head start the linear function starts off with.
+This function (algorithm) is considered O(n^2) as every input requires us to do n more operations; n*n == n^2. Thus, **O(n^2) are asymptotically slower than O(n) algorithms**, but this doesn't mean O(n) algorithms will always run faster, even in the same environment and the same hardware; maybe for small input sizes O(n) could be faster, but **as you approach towards infinity O(n^2) will eventually overtake O(n)**; just like any quadratic mathematical function will eventually overtake any linear function, no matter how much of a head start the linear function starts off with.
 
 Another asymptotic complexity is logarithmic time; **O(log n)**. An example of an algorithm that runs this quickly is the classic **Binary Search Algorithm** for finding an element in an already sorted list on elements.
 
@@ -122,10 +122,13 @@ Because an algorithm could potentially find the match on the first operation reg
 
 Continuing with the above notation of O(log n), our best case scenario is one where the element is right in the middle and thus one of constant time; we get the element in one operation no matter how big the array is. Thus, the best possible runtime for this algorithm is said to run in **Omega(1) time**. In the worst case scenario, it will run in O(log n) time as it has to perform O(log n) split-checks of the array to find the correct element.
 
-By contrast, a **Linear Search Algorithm** is one where we step through each individual character in the string, which means at best it is Omega(1) and at worst it is O(n).
+By contrast, a **Linear Search Algorithm** (like the first string example) is one where we step through each individual character in the string, which means at best it is Omega(1) and at worst it is O(n).
 
-The last keyword to touch on is **Theta**, which is used when the best and the worst case scenario runtimes are the same. Our first string problem is an example of this. No matter what number we store in the variable we will have to look at it. **The best case is we look at it and find the element. The worst case is we look at it and find the element. Therefore the runtime would be labeled as Theta(1),** as both the best and worse case scenarios are O(1) (constant time).
+The last keyword to touch on is **Theta**, which is used when the **best and the worst case scenario runtimes are the same**. Our second string problem is an example of this. No matter what number we store in the variable _len_, we will have to look at it. **The best case is we look at it and find the element. The worst case is we look at it and find the element. Therefore the runtime would be labeled as Theta(1),** as both the best and worse case scenarios are O(1) (constant time).
 
+### Summary
+
+---
 In summary, we have good ways to reason about code's efficiency without knowing anything about the real world time they take the run (which is affected by an incredible number of different factors). It also allows us to reason well about what will happen when the size of the inputs increases.
 
 ![Big O comparisons](https://i.imgur.com/np3rNEh.png)
@@ -148,9 +151,197 @@ In summary, we have good ways to reason about code's efficiency without knowing 
 
 ## [6] **System Design**
 
-## [7] **Database Architecture**
+## [7] **Databases & Database Architecture**
 
-## References (raw, will properly update later)
+<details>
+<summary><b>Normalization (1NF - 4NF)
+</b></summary>
+
+### Bite Size Overview
+
+---
+In simplest terms, normalization is the process of restructing a relational database through a series of "normal-forms" (1NF, 2NF, etc.) in an order to reduce data redundancy and improve data integrity.
+
+### Videos & Links
+
+---
+
+1. <a href="https://www.youtube.com/watch?v=oexOYUUyQik&list=PL08dDdrkMLGrz67nBPbfX8KsGW-MUXU2G&index=47">What is Database Normalization?</a>
+2. <a href="https://www.youtube.com/watch?v=UrYLYV7WSHM&list=PL08dDdrkMLGrz67nBPbfX8KsGW-MUXU2G&t=0s&index=49">Database Normalization, 1NF - 4NF (run at 1.25x speed)</a>
+
+### Notes
+
+---
+
+### Summary
+
+---
+</details>
+
+<details>
+<summary><b>PostgreSQL
+</b></summary>
+
+### Bite Size Overview
+
+---
+PostgreSQL, more commonly referred to as Postgres, is a powerful and open source object-relational database management system (RDBMS). Postgres offers substantial additional power by leveraging **classes, inheritence, types, functions**, which is why we refer to Postgers as object-relational.
+
+### Videos & Links
+
+---
+1. <a href="https://www.postgresql.org/docs/6.3/c0101.htm
+">What is Postgres?</a>
+2. <a href="https://www.postgresql.org/download/linux/ubuntu/">Install Postgres using apt</a>
+3. <a href="https://www.tecmint.com/install-postgresql-from-source-code-in-linux/">Install Postgres from source code</a>
+
+### Notes
+
+---
+In the past, traditional DBMS's only support a data model consisting of a collection of named relations which contain a small option of specific types (float, int, char string, money, date), but as you can see this model can quickly become inadequate for future data processing applications <a href="https://www.postgresql.org/docs/6.3/c0101.htm">source</a>. This is where the relational aspect of DMBS's comes into play due to their "Spartan simplicity", however the simplicity is still a double-edged sword as it makes implementation of certain application very difficult. As we touched on in the Bite Size Overview, this is where Postgres really shines; by leveraging those 4 basic concepts in addition to things like **constraints, triggers, rules, transactional integrity** and more it allows users to easily extend their system and deal with more complex processes.
+
+### Summary
+
+---
+</details>
+
+## [8] **Web Apps and Servers**
+
+<details>
+<summary><b>HTTP Protocol
+</b></summary>
+
+### Bite Size Overview
+
+---
+
+### Videos & Links
+
+---
+
+1. 
+
+### Notes
+
+---
+
+### Summary
+
+---
+</details>
+    
+<details>
+<summary><b>MVC
+</b></summary>
+
+### Bite Size Overview
+
+---
+The MVC, or **Model-View-Controller**, is really just a design pattern for organizing code in an application to improve maintanability.
+
+is a general design pattern that outlines the structure of the system. It seperates the domain/application/business/etc logic from the rest of the User Interface.
+
+Its primary purpose is to seperate "internal representations of information from the ways that information is presented to and accepted from the user", which **allows us to increase modularity for simultaneous development and code reuse** <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">(source)</a>.
+
+### Videos & Links
+
+---
+
+1. <a href="https://softwareengineering.stackexchange.com/questions/127624/what-is-mvc-really">What is a MVC really?</a>
+2. <a href="https://alysivji.github.io/flask-part2-building-a-flask-web-application.html">Building an MVC with Flask.</a>
+
+### Notes
+
+---
+In a MVC design pattern each of the components [M, V, C] are defined as follows:
+
+* **Model**
+    * Handles application data and data-management
+    * Includes your data structures, storage systems, etc. This is the data and data-management part of the structure
+* **View**
+    * Any output representation of information to the user (html, json, etc)
+    * Renders data from model into form that is suitable for displaying in user interface
+* **Controller**
+    * Accepts inputs and converts commands for model and view (API layer)
+    * A controller should **never** contain domain/business logic or be able to communicate directly to the database
+
+The **model** stores data that is retrieved according to commands from the **controller**.
+
+The **view** generates output for the user based on changed in the model.
+
+The **controller** acts on both the **model** (to update state) and the **view** (to render changes).
+
+
+
+### Summary
+
+---
+</details>
+
+<details>
+<summary><b>Web Frameworks
+</b></summary>
+
+### Bite Size Overview
+
+---
+Web frameworks are libraries of server-side languages that contruct the back-end structure of a site. Web frameworks aim to automate the overhead services associated with common activities performed in web application (and abstract away low-level issues like protocols and sockets).
+
+### Videos & Links
+
+---
+1. <a href="https://www.oreilly.com/learning/python-web-frameworks">Short online book by O'Reilly</a>
+
+### Notes
+
+---
+The majority of web frameworks are exclusively server-side technologies (rendering the page on the server before sending it to the client).
+
+Below are a few of the more common tasks that web frameworks can handle for you:
+
+* Routing (URL)
+* HTML, XML, and JSON (output format)
+* Database manipulation
+* Security against CSRF attacks
+* Session storage and retrieval
+
+Depending on the size of your application, you may end up outright removing or simply creating your own versions of the functions. The point is that some web frameworks come as "battery-included" libraries like Django, which means they come bundled with every feature off the bat, and others like Flask, which are light-weight and tend to only give you what you need.
+
+There are pros and cons to all of the different web frameworks, so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a _very_ minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Djano. There are plenty of other examples, but these are the two situations that are most straightforwad.
+
+**There is a spectrum between minimal functionality with easy extensibility on one end and including everything in the framework with tight integration on the other end.**
+
+### Summary
+
+---
+Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services.
+
+</details>
+
+<details>
+<summary><b>API
+</b></summary>
+
+### Bite Size Overview
+
+---
+
+### Videos & Links
+
+---
+
+1. 
+
+### Notes
+
+---
+
+### Summary
+
+---
+</details>
+
+## [8] **References** (raw, will sort and format later)
 
 * https://github.com/jwasham/coding-interview-university
 * https://www.amazon.com/Write-Great-Code-Understanding-Machine/dp/1593270038
