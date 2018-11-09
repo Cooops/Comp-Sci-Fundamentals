@@ -29,18 +29,249 @@ I am doing this for myself first and foremost; not anyone else.
 
 ## [1] **Low-level Knowledge**
 
+<details>
+<summary><b>CPU & RAM
+</b></summary>
+
+### Bite Size Overview
+
+---
+
+### Videos & Links
+
+---
+
 1. **[How a CPU works](https://www.youtube.com/watch?v=FZGugFqdr60&feature=youtu.be)**
 2. **[How a CPU executes a program](https://www.youtube.com/watch?v=XM4lGflQFvA)**
-    * **Work in progress, will come back to this once my C related study material arrives...**
-    * *INC A
-    * Machine code will usually represent binary patterns in hexadecimal. Hexadecimal is an easy way for humans to remember binary patterns.
-    * Fetch, Decode, Execute
-    * For a microprocessor to works the program counter has to contain a memory address that it points to.
 3. **[How computer's calculate - ALU](https://www.youtube.com/watch?v=1I5ZMmrOfnA&feature=youtu.be)**
 4. **[Registers and RAM](https://www.youtube.com/watch?v=fpnE6UAfbtU&feature=youtu.be)**
 5. **[Instructions and Programs](https://www.youtube.com/watch?v=zltgXvg6r3k&feature=youtu.be)**
 
+
+### Notes
+
+---
+* *INC A
+* Machine code will usually represent binary patterns in hexadecimal. Hexadecimal is an easy way for humans to remember binary patterns.
+* Fetch, Decode, Execute
+* For a microprocessor to works the program counter has to contain a memory address that it points to.
+
+### Summary
+
+---
+</details>
+   
 ## [2] **Data Structures**
+
+<details>
+<summary><b>Hash Tables</b></summary>
+
+### Bite Size Overview
+
+---
+Hash Tables, or more commonly dictionaries in Python, are a type of data structure that stores key-value pairs where the key is generated through a hashing function. This improves the functionality by a significant margin as the key values themselves act as the index of the array which stores the data. A picture says a thousand words:
+
+```
+dict = {'Name': 'Cooper', 'Focus': 'Comp Sci Fundamentals'}
+
+print(dict['Name'], dict['Focus'])
+
+>>> Cooper, Comp Sci Fundamentals
+```
+
+### Videos & Links
+
+---
+
+1. 
+
+### Notes
+
+---
+A Dictionary satisfied the requirements to properly represent the implement of a Hash Table:
+
+    * The keys of the dictionary are hashable (produces unique values, are not lists).
+    * The order of the data elements are not fixed.
+
+### Summary
+
+---
+</details>
+
+<details>
+<summary><b>Linked Lists</b></summary>
+
+### Bite Size Overview
+
+---
+On the simplest level, a Linked List is really just a bunch of connected nodes (sub-data structures). The nodes link together to form a list and contain two attributes:
+
+* a value (int, str, objects, etc)
+* a pointer to the next node in the sequence
+
+### Videos & Links
+
+---
+
+1. <a href="https://medium.freecodecamp.org/python-interview-question-guide-how-to-code-a-linked-list-fd77cbbd367d">Linked Lists in Python (text)</a>
+2. <a href="https://www.youtube.com/watch?v=6sBsF13n5ig"> Linked Lists in Python (video)</a>
+3. <a href="https://stackoverflow.com/questions/39585740/how-can-i-print-all-of-the-values-of-the-nodes-in-my-singly-linked-list-using-a">Linked Lists - StackOverflow (text)</a>
+4. <a href="https://stackoverflow.com/questions/39585740/how-can-i-print-all-of-the-values-of-the-nodes-in-my-singly-linked-list-using-a">Printing a Singly-Linked List (text)</a>
+
+### Notes
+
+---
+To start off, let's define a few terms:
+* **Head Node**
+    * The head node is simply the first (root) node in a linked list.
+* **Tail Node**
+    * The tail node is simply the last node in a linked list. Since it's the last node in the linked list, it must point to NULL as there is no other node in the sequence.
+* **Singly Linked**
+    * Each node points to a single node in front of it.
+* **Doubly Linked**
+    * each node can point to two other nodes; one in front and one behind.
+
+With some terminology out of the way, it's almost time to jump into some code examples, but first it's important to touch on the fact that Linked Lists can be as simple or complex as you desire (and the example below is simple).
+
+#### Creating a Linked List
+
+Since a Linked List is made up of a series of nodes, lets first start by creating a Class for the node:
+
+```
+class Node():
+    def __init__(self, value, nextNode=None):
+        self.value = None
+        self.nextNode = nextNode
+```
+
+If we want to actually populate a node, we simply pass in a value:
+
+```
+firstNode = Node('5')
+secondNode = Node('13')
+thirdNode = Node('2')
+```
+
+We have created three individual nodes, but now we need to link them together:
+
+```
+firstNode.nextNode = secondNode
+secondNode.nextNode = thirdNode
+```
+
+While an extremely simple example, this does provide the basis for understanding what a Linked List in Python looks like on the most basic level.
+
+#### Traversing a Linked List
+
+We may be asked to get the rest of the nodes in the Linked List when provided only with the head, so we would need to find a way to iterate over the list and find what each node is pointing to, and the corresponding node that is pointing to, all the way down the structure until we hit the end (`NULL`).
+
+```
+currentNode = firstNode
+
+# if the current node is not NULL, move to the next node
+while currentNode:
+    print(currentNode.value)
+    currentNode = currentNode.nextNode
+```
+
+This is a _very_ basic implementation of a Linked List and how to traverse it, but it's a great way to understand how things work on a simple level.
+
+#### Inserting values into a Linked List
+
+Unless you are told otherwise, always insert a new element into the tail (last) node in a Linked List.
+
+The simplest way to insert a new value is just like how we create one; by binding the new element to the tail node:
+
+```
+fourthNode = Node('4')
+thirdNode.nextNode = fourthNode
+```
+
+Lets jump back to our example a few steps ago that only provides the head node. In order to traverse this list, we can utilize the aforementioned methods to find the tail.
+
+First, lets traverse through the list and check if the node is `NULL` or populated. If it's not, we stop on the last populated node and set the nextNode equal to the value we wish to insert:
+
+```
+def insertNode(head, value):
+    currentNode = head
+    while currentNode:
+        while not currentNode.nextNode:
+            currentNode.nextNode = Node(value)
+            return head
+        currentNode = currentNode.nextNode
+```
+
+#### Deleting values from a Linked List
+
+Deleting within a Linked List can get a bit tricky, so let's look at a few examples.
+
+If we wanted to "delete" the `13`, all we would need to do is point the `5` to the `2` so that the `13` is never referenced:
+
+```
+5 -> 13 -> 2 -> NULL
+
+becomes
+
+5 -> 2 -> NULL
+```
+
+In order to do implement this process in a streamlined manner we now need to keep track of not just the currentNode but also the previousNode. This also means accounting for the head node being the node we wish to delete.
+
+There are very many ways to accomplish this task and this implementation is not the most optimal, but the example I have chosen is easy to understand. See the code below:
+
+```
+def deleteNode(head, valueToDelete):
+    currentNode = head
+    previousNode = None
+    while currentNode:
+        if currentNode.value == valueToDelete:
+            if not previousNode:
+                newHead = currentNode.nextNode
+                currentNode.nextNode = None
+                return newHead
+            previousNode.nextNode = currentNode.nextNode
+            return head
+        previousNode = currentNode
+        currentNode = currentNode.nextNode
+    return head
+```
+
+In the above block of code, after finding the node we wish to delete, we set the previous node's `nextNode` to the deleted node's `nextNode` to once again effectively remove it from the list.
+
+#### Time Complexities
+
+Let's evaluate the time complexities surrounding the above example (which is something you would implement in an interview, in more real-world scenarios you can store attribuets in a LinkedList class to lower the complexities).
+
+Lets state _n_ is equal to the number of elements inside a Linked List.
+
+What are the following time complexities?
+
+1. **Traversing**
+    * O(n)
+        * Traversing a list will always require iterating over _n_ elements.
+        * Theta(n). (?)
+2. **Tail insertion**
+    * O(n)
+        * Requires traversing the list to insert our new node.
+        * Theta(n).
+3. **Head insertion**
+    * O(1)
+        * We always know where the index of head is within the list, so the best case time complexity is O(1).
+        * Theta(1).
+4. **Deleting**
+    * O(n)
+        * Requires traversing the list to delete our new node.
+        * Omega(1), worst case O(n).
+
+This should act as a rough introduction to Linked Lists in Python; thanks for checking it out :).
+
+### Summary
+
+---
+In summary, Linked Lists are just a bunch of connected nodes that point to one other node (singly-linked) or up to two other nodes (doubly-linked). A node within a Linked List can only contain two attributes: a value (int, str, etc) and a pointer to the next node in the sequence. Linked Lists seem to be commonplace in technical interviews, so this section is likely one I will come back to often.
+
+The benefit of a linked list is that it can provide list insertion and deletions of a node in O(1) instead of O(n).
+</details>
 
 ## [3] **Algorithms**
 
@@ -65,7 +296,7 @@ Asymptotic Notation, aka Big O notation, is the most common metric for calculati
 Fast or efficient algorithms =/= a measurement in real time (seconds, minutes) due to how much hardware varies, or that a user might be running their program through a different piece of software, etc. Thus, the uniform way compare the algorithm is to measure the Asymptotic Complexity of a program, and to use the notation (Big O (or just O)) for describing this.
 **How fast a programs runtime grows asymptotically == as the size of your inputs increase towards infinity, how does the runtime of your program grow?**
 
-I magine counting the number of characters in a string the simplest way by walking through the whole string, letter by letter, and adding 1 to a counter for each character.
+Imagine counting the number of characters in a string the simplest way by walking through the whole string, letter by letter, and adding 1 to a counter for each character.
 
 ```
 def string_length(strng):
@@ -129,7 +360,7 @@ The last keyword to touch on is **Theta**, which is used when the **best and the
 ### Summary
 
 ---
-In summary, we have good ways to reason about code's efficiency without knowing anything about the real world time they take the run (which is affected by an incredible number of different factors). It also allows us to reason well about what will happen when the size of the inputs increases.
+In summary, we have good ways to reason about code's efficiency without knowing anything about the real world time they take the run (which is affected by an incredible number of different factors). It also allows us to reason well about what will happen when the size of the inputs increases towards infinity.
 
 ![Big O comparisons](https://i.imgur.com/np3rNEh.png)
 </details>
@@ -194,6 +425,7 @@ PostgreSQL, more commonly referred to as Postgres, is a powerful and open source
 ">What is Postgres?</a>
 2. <a href="https://www.postgresql.org/download/linux/ubuntu/">Install Postgres using apt</a>
 3. <a href="https://www.tecmint.com/install-postgresql-from-source-code-in-linux/">Install Postgres from source code</a>
+4. <a href="http://blog.shippable.com/why-we-moved-from-nosql-mongodb-to-postgressql">Why we moved from NoSQL MongoDB to PostgreSQL</a>
 
 ### Notes
 
@@ -239,16 +471,16 @@ In the past, traditional DBMS's only support a data model consisting of a collec
 ---
 The MVC, or **Model-View-Controller**, is really just a design pattern for organizing code in an application to improve maintanability.
 
-is a general design pattern that outlines the structure of the system. It seperates the domain/application/business/etc logic from the rest of the User Interface.
+MVC is a general design pattern that outlines the structure of the system. It seperates the domain/application/business/etc logic from the rest of the User Interface.
 
-Its primary purpose is to seperate "internal representations of information from the ways that information is presented to and accepted from the user", which **allows us to increase modularity for simultaneous development and code reuse** <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">(source)</a>.
+Or in more technical terms, the primary purpose is to seperate "internal representations of information from the ways that information is presented to and accepted from the user", which **allows us to increase modularity for simultaneous development and code reuse** <a href="https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller">(source)</a>.
 
 ### Videos & Links
 
 ---
 
 1. <a href="https://softwareengineering.stackexchange.com/questions/127624/what-is-mvc-really">What is a MVC really?</a>
-2. <a href="https://alysivji.github.io/flask-part2-building-a-flask-web-application.html">Building an MVC with Flask.</a>
+2. <a href="https://alysivji.github.io/flask-part2-building-a-flask-web-application.html">Building an MVC with Flask</a>
 
 ### Notes
 
@@ -291,6 +523,7 @@ Web frameworks are libraries of server-side languages that contruct the back-end
 
 ---
 1. <a href="https://www.oreilly.com/learning/python-web-frameworks">Short online book by O'Reilly</a>
+2. <a href="https://www.quora.com/Why-did-Pinterest-move-from-Django-to-Flask">Why did Pinterest move to Flask from Django?</a>
 
 ### Notes
 
@@ -307,14 +540,16 @@ Below are a few of the more common tasks that web frameworks can handle for you:
 
 Depending on the size of your application, you may end up outright removing or simply creating your own versions of the functions. The point is that some web frameworks come as "battery-included" libraries like Django, which means they come bundled with every feature off the bat, and others like Flask, which are light-weight and tend to only give you what you need.
 
-There are pros and cons to all of the different web frameworks, so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a _very_ minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Djano. There are plenty of other examples, but these are the two situations that are most straightforwad.
+There are pros and cons to all of the different web frameworks, so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Django. There are plenty of other examples, but these are the two situations that are the most straightforward.
+
+The personal preference is slanted towards Flask, particularly with how simply one can both build, expand, and maintain API's.
 
 **There is a spectrum between minimal functionality with easy extensibility on one end and including everything in the framework with tight integration on the other end.**
 
 ### Summary
 
 ---
-Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services.
+Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services, but keep in mind that they with the "batteries-included" approach they can come with a tightly coupled internal set of packages or modules that may not be efficient for what you are trying to achieve.
 
 </details>
 
@@ -356,5 +591,10 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 * https://www.amazon.com/Programming-Language-Brian-W-Kernighan/dp/0131103628
 * https://github.com/lekkas/c-algorithms
 * https://justin.abrah.ms/computer-science/big-o-notation-explained.html
+* https://labs.spotify.com/2013/03/20/how-we-use-python-at-spotify/
+* http://www.ironpythoninaction.com/magic-methods.html
+* http://www.postgresqltutorial.com/postgresql-foreign-key/
+* https://stackoverflow.com/questions/18211694/data-structure-model-of-score-keeping-app-for-games-avoiding-many-to-many-to-ma
+* https://static.simonwillison.net/static/2010/redis-tutorial/
 
 _If you somehow ended up here, thanks for checking it out and I hope you find it helpful <3._
