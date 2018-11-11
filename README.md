@@ -26,6 +26,7 @@ I am doing this for myself first and foremost; not anyone else.
 * System Design (solving problems at scale)
 * Databases
 * Web Apps & Servers
+* Math
 
 ## [1] **Low-level Knowledge**
 
@@ -66,10 +67,20 @@ I am doing this for myself first and foremost; not anyone else.
 <details>
 <summary><b>Hash Tables</b></summary>
 
+### Time Complexity
+
+| Algorithm     | Average       | Worst Case  |
+| ------------- |:-------------:| -----------:|
+| Space         | O(1)          | O(n)        |
+| Search        | O(n)          | O(n)        |
+| Insert        | O(n)          | O(n)        |
+| Delete        | O(n)          | O(n)        |
+
+
 ### Bite Size Overview
 
 ---
-Hash Tables, or more commonly dictionaries in Python, are a type of data structure that stores key-value pairs where the key is generated through a hashing function. This improves the functionality by a significant margin as the key values themselves act as the index of the array which stores the data. A picture says a thousand words:
+Hash Tables, or more commonly implemented as dictionaries in Python, are a type of data structure that stores key-value pairs where the key is generated through a hashing function. This improves the functionality of lookups by a significant margin as the key values themselves act as the index of the array which stores the data. A picture says a thousand words:
 
 ```
 dict = {'Name': 'Cooper', 'Focus': 'Comp Sci Fundamentals'}
@@ -79,16 +90,23 @@ print(dict['Name'], dict['Focus'])
 >>> Cooper, Comp Sci Fundamentals
 ```
 
+**When dealing with space vs time tradeoffs, keep Hash Tables at the top of your mind.** On average, Hash Tables will out-perform search trees or any other table lookup structure.
+
 ### Videos & Links
 
 ---
 
-1. 
+1. <a href="https://en.wikipedia.org/wiki/Hash_table">What is a Hash Table? (text)</a>
+2. <a href="https://stackoverflow.com/questions/114830/is-a-python-dictionary-an-example-of-a-hash-table">Is a Python Dictionary an example of a Hash Table (text)</a>
+3. <a href="http://www.laurentluce.com/posts/python-dictionary-implementation/">Why doesn't Python have a real hashing function?</a>
+4. <a href="http://www.wellho.net/mouth/3934_Multiple-identical-keys-in-a-Python-dict-yes-you-can-.html">Multiple Dict Keys in Python</a>
 
 ### Notes
 
 ---
-A Dictionary satisfied the requirements to properly represent the implement of a Hash Table:
+Hash Tables are widely used in many kinds of computer software, primarily for associate arrays, database indexing, caching, and sets.
+
+A Dictionary in Python, like a hash in Perl or an associative array in PHP, satisfied the requirements to properly represent the implement of a Hash Table:
 
     * The keys of the dictionary are hashable (produces unique values, are not lists).
     * The order of the data elements are not fixed.
@@ -273,6 +291,197 @@ In summary, Linked Lists are just a bunch of connected nodes that point to one o
 The benefit of a linked list is that it can provide list insertion and deletions of a node in O(1) instead of O(n).
 </details>
 
+<details>
+<summary><b>Matrices (2D Arrays)</b></summary>
+
+### Time Complexity
+
+---
+
+### Bite Size Overview
+
+---
+Put simply, a matrix is a two-dimensional data structure where the numbers are divided into rows and columns:
+
+```
+0 0 0 0 0
+1 1 1 1 1
+0 0 0 0 0
+
+A 3x5 ("three by five") Matrix, as it has 3 rows and 5 columns.
+```
+
+You are most commonly going to see these implement in the form of questions surrounding 2D arrays (which is basically a matrix).
+
+### Videos & Links
+
+---
+1. <a href="https://www.programiz.com/python-programming/matrix">Overview of a Matrix in Python (text)</a>
+
+### Notes
+
+---
+Python doesn't have built in matrices, however for basic tasks we can implement this using a list of lists:
+
+```
+x = [[0, 0, 0, 0, 0],
+    [1, 1, 1, 1, 1],
+    [0, 0, 0, 0, 0]]
+```
+
+When diving into more complex computational tasks, the proper way to implement a Matrix is through the ![NumPy](https://www.numpy.org/) package. NumPy is basically the defacto package for scientific computing and it has great support for a powerful N-dimensional array object.
+
+NumPy provides a multidimensional array of numbers (which is actually just an object). See the example below:
+
+```
+import numpy as np
+a = np.array([1, 2, 3])
+print(a)               # Output: [1, 2, 3]
+print(type(a))         # Output: <class 'numpy.ndarray'>
+```
+
+You can see in the above that the NumPy array class is called ndarray. Utilizing NumPy to create matrices will allow a massive amount of computational efficiency vs lists, along with a higher degree of control.
+
+Similarly to lists, we can traverse matrices using an index. See the below example of a 1 dimensional NumPy array:
+
+```
+import numpy as np
+A = np.array([2, 4, 6, 8, 10])
+
+print("A[0] =", A[0])     # First element
+print("A[2] =", A[2])     # Third element
+print("A[-1] =", A[-1])   # Last element
+```
+
+Now, let's say we need to traverse a 2D array (matrix).
+
+First, let's see how we would extract the elements:
+
+```
+import numpy as np
+
+A = np.array([[1, 4, 5, 12],
+    [-5, 8, 9, 0],
+    [-6, 7, 11, 19]])
+
+#  First element of first row
+print("A[0][0] =", A[0][0])  
+
+# Third element of second row
+print("A[1][2] =", A[1][2])
+
+# Last element of last row
+print("A[-1][-1] =", A[-1][-1])  
+
+>>> A[0][0] = 1
+>>> A[1][2] = 9
+>>> A[-1][-1] = 19
+```
+
+And the rows:
+
+```
+import numpy as np
+
+A = np.array([[1, 4, 5, 12], 
+    [-5, 8, 9, 0],
+    [-6, 7, 11, 19]])
+
+print("A[0] =", A[0]) # First Row
+print("A[2] =", A[2]) # Third Row
+print("A[-1] =", A[-1]) # Last Row (3rd row in this case)
+
+>>> A[0] = [1, 4, 5, 12]
+>>> A[2] = [-6, 7, 11, 19]
+>>> A[-1] = [-6, 7, 11, 19]
+```
+
+The columns:
+
+```
+import numpy as np
+
+A = np.array([[1, 4, 5, 12], 
+    [-5, 8, 9, 0],
+    [-6, 7, 11, 19]])
+
+print("A[:,0] =",A[:,0]) # First Column
+print("A[:,3] =", A[:,3]) # Fourth Column
+print("A[:,-1] =", A[:,-1]) # Last Column (4th column in this case)
+
+>>> A[:,0] = [ 1 -5 -6]
+>>> A[:,3] = [12  0 19]
+>>> A[:,-1] = [12  0 19]
+```
+
+The above array manipulation is known as **slicing** matrices and is essentially the same thing as how <a href="https://stackoverflow.com/questions/509211/understanding-pythons-slice-notation">slicing for lists in Python work</a>. See the brief snapshot below:
+
+```
+a[start:end]        # items start through end-1
+a[start:]           # items start through the rest of the array
+a[:end]             # items from the beginning through end-1
+a[:]                # a copy of the whole array
+
+a[start:end:step]   # start through not past end, by step
+--------------------------------------------------------------------
+a[-1]               # last item in the array
+a[-2:]              # last two items in the array
+a[:-2]              # everything except the last two items
+
+a[::-1]             # all items in the array, reversed
+a[1::-1]            # the first two items, reversed
+a[:-3:-1]           # the last two items, reversed
+a[-3::-1]           # everything except the last two items, reversed
+```
+
+One way to remember how slices work is to think of the indices as pointing between characters, with the left edge of the first character numbered 0. Then the right edge of the last character of a string of n characters has index n.
+
+If we wanted to slice a matrix, we would do as follows:
+
+```
+import numpy as np
+
+A = np.array([[1, 4, 5, 12, 14], 
+    [-5, 8, 9, 0, 17],
+    [-6, 7, 11, 19, 21]])
+
+print(A[:2, :4])  # two rows, four columns
+
+''' Output:
+[[ 1  4  5 12]
+ [-5  8  9  0]]
+'''
+
+
+print(A[:1,])  # first row, all columns
+
+''' Output:
+[[ 1  4  5 12 14]]
+'''
+
+print(A[:,2])  # all rows, second column
+
+''' Output:
+[ 5  9 11]
+'''
+
+print(A[:, 2:5])  # all rows, third to fifth column
+
+'''Output:
+[[ 5 12 14]
+ [ 9  0 17]
+ [11 19 21]]
+'''
+```
+This is just a high level overview, but it still provides a good baseline for working with matrices in Python.
+
+### Summary
+
+---
+Matrices are two-dimensional data structures that allow us to store data in the forms of columns and rows. The most common place to encounter matrices are in the form of questions surrounding 2D arrays (which is basically a matrix).
+
+</details>
+
 ## [3] **Algorithms**
 
 <details>
@@ -383,6 +592,145 @@ In summary, we have good ways to reason about code's efficiency without knowing 
 ## [6] **System Design**
 
 ## [7] **Databases & Database Architecture**
+
+<details>
+<summary><b>ERD
+</b></summary>
+
+### Bite Size Overview
+
+---
+In order to understand how the many elements of a database interact with eachother can be a daunting task, which is why Engineeers build Entity Relationship Diagrams, or ERD's for short.
+
+### Videos & Links
+
+---
+1. <a href="https://www.youtube.com/watch?v=QpdhBUYk7Kk&vl=en">ERD Tutorial (video)</a>
+
+### Notes
+
+---
+First off, let's define a few terms:
+* **Entity**
+    * An entity is an object, such a person, place, or thing to be tracked in the database. These are the **rows** in your database.
+        * For example, if you purchase an item on Amazon then an entity can be an order, a customer, or the product itself.
+* **Attributes**
+    * Each entity is going to have a series of attributes, which are various properties or traits and are represented as the **columns** in your database.
+        * Customer_ID, FirstName, LastName, etc.
+* **Relationships**
+    * Dscribes how the entities will interact with eachother (if they can). This is usually done by drawing a line in between them, denoting that there is some sort of interaction or sonnection in some way.
+* **Cardinality**
+    * Expands on the measuring the relationships, particularly in a numerical context; particularly within minimum and maximums.
+
+        ![test](https://qph.fs.quoracdn.net/main-qimg-29c3a0080fe2fe1969e8e61a46de4b45)
+
+Now, in the above example if we were asked to measure the cardinality between a customer and an order, we would ask ourselves:
+
+* **What is the min/max number of orders that a customer could have?**
+    * Min: Zero
+        * A customer can exist but not have placed an order yet.
+    * Max: Many
+        * A customer could theoretically place an infinite number of orders.
+    * **Result: Zero or Many**
+
+Let's do the same for the order: 
+
+* **What is the min/max number of customers that an order could have?**
+    * Min: One
+        * In order for an order to exist it has to have at least one customer.
+    * Max: One
+        * An order can only have at most one customer.
+    * **Result: One (and only one)**
+
+Now we need to do the other side, the cardinality between orders and products:
+
+* **What is the min/max numbers of products that an order could have?**
+    * Min: One
+        * In order for an order to exist it has to have at least one product.
+    * Max: Many
+        * An order can contains an infinite number of products.
+    * **Result: One to Many**
+
+* **What is the min/max numbers of orders that a product can be a part of?**
+    * Min: Zero
+        * A product could simply not exist in an order, therefore an order can have zero of a product.
+    * Max: Many
+        * Conversely, it could also be a part of many orders.
+    * **Result: Zero to Many**
+
+![ERD](https://i.imgur.com/03uh619.png)
+
+The above picture shows our resulting ERD and the cardinality between the tables (notice the crow's foot notation).
+
+As we move into the next part of these notes a few more definitions need to be outlined (remember, each entity represents a table in your database):
+* **Primary Key**
+    * An attribute (or field) that uniquely identifies every record in a certain table.
+    * There is one primary key per entity.
+    * Unique.
+    * Never changes.
+    * Never NULL.
+
+For the customer table in our above example, the primary key would be one that can allow us to easily distinguish between each customer.
+
+Following along with the above constraints, we can quickly identify that the Customer_ID is the only unique identifier that we can use as a primary key. By design, a primary key is supposed to auto-increment for each record that is added to the table.
+
+If we then jump over to the order table, it's pretty clear to see that Order_number is best utilized as our primary key.
+
+And finally, Product_ID is our primary key for the product table.
+
+Now, you may have noticed that there is a Customer_ID field in the orders table, yet it is now the primary key for the orders table. What an astute observation ;).
+
+This is what is referred to as a:
+* **Foreign Key**
+    * The exact same as a primary key, just located in a foreign place (different entity (table)).
+    * Doesn't have to be unique.
+    * Can be repeated in a table.
+    * Can have multiple foreign keys in one entry.
+
+Suppose you have a primary key in one entity but it would be very helpful to pull that data into another entity; enter the foreign key. Taking note of our foreign keys can help us ascertain how our entities relate to eachother.
+
+So, why is Customer_ID a foreign key in the orders table? Because for each order we place we need to know exactly which customer placed that order. The order entity is simply referencing the Customer_ID from the foreign entity.
+
+This also means we need to adjust our crow's feet to reinforce the fact that our foreign key is referencing our primary key.
+
+Let's for each order we also wanted to know which product is being purchased. We would add the Product_ID as a field into our orders table as a foreign key pointing to Product_ID in the products table, and then update our ERD as follows:
+
+![Updated ERD](https://i.imgur.com/Lk3bbzY.png)
+
+There's another term to touch on which is:
+* **Composite Primary Key**
+    * Used when two or more attributes are necessary to uniquely identify every record in a table.
+    * Use the fewest number of attributes possible.
+    * Don't use attributes that are likely to change.
+
+If we were to create a shipment entity, we would have a foreign key referencing the Product_ID and another foriegn key referencing the Order_number. The problem with this table is that there is no way to uniquely identify a row, as the Product_ID is duplicated whenever another person purchases the same item, and the order could be split into a couple different shipments giving us a non-unique amount of Order_numbers.
+
+This is when we need to combine the two foreign keys and create a composite key; both the Product_ID and the Order_number when squashed together provide us with a value that will not be repeated. This is technically called a **Compound Key** as we are using two foriegn keys, but usually people use composite key as an umbrella term.
+
+Some people argue that you should just create a primary key in the shipments table (which I prefer), Shipment_ID for example, instead of using a compound key, but it all depends on how the database is created and whether or not incorporating a composite key makes sense.
+
+Whenever you are creating your ER diagrams it is important to ask yourself "Is there anything else I should be recording into the database?". Sometimes you will have two entities connected to eachother, but there is more going on between them than you are accounting for. This is when you need to use a **Bridge Table**, which we will define after we outline the example below.
+
+With our current setup, let's strip down our diagram to just compare the customer and product tables. You might ask if we could just create a direct connection between these two entities; a customer can purchase Zero or Many products, and a certain product can be purchased by Zero or Many customers. Ceonceptually, yes this does work, but the way this is set up you are not going to know a few important points:
+
+* When did this person purchase the product?
+* How many of them did they purchase at once?
+* Did they return to purchase more at seperate times?
+
+You are going to be in the dark about the relationship between many of these entities, and this is most common to occur in Many to Many relationships. In order to remedy this, we need to utilzie the:
+* **Bridge Table**.
+    * Allows for an intermediary one to many relationship and gets you the information you are lacking.
+
+If we included the order entity back into our diagram, we can quickly see that this is acting as our bridge table. This breaks up the Many to Many relationship between the customer and product entities, and now whenever a cusomter purchases a product we will have a record of that interaction in our order table.
+
+This is why you should always ask yourself if there is more data that you need to capture between the various entities.
+
+### Summary
+
+---
+ERD's allow us to visualize the relationships between the entities in our database. We can utilize the crow's foot notation to map out relations when creating ERD's, and we always need to keep how and what potential data needs to be tracked within our desired system.
+
+</details>
 
 <details>
 <summary><b>Normalization (1NF - 4NF)
@@ -549,7 +897,7 @@ The personal preference is slanted towards Flask, particularly with how simply o
 ### Summary
 
 ---
-Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services, but keep in mind that they with the "batteries-included" approach they can come with a tightly coupled internal set of packages or modules that may not be efficient for what you are trying to achieve.
+Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services, but keep in mind that those with the "batteries-included" approach can come with a tightly coupled internal set of packages or modules that may not be efficient for what you are trying to achieve.
 
 </details>
 
@@ -576,7 +924,26 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 ---
 </details>
 
-## [8] **References** (raw, will sort and format later)
+## [9] **Math**
+
+* **Modulo**
+    * Modulo returns the remainder (modulus), not the quotient, between two values.
+        * ```
+          4 % 2; <- returns 0
+          4 % 3; <- returns 1
+
+          This is commonly used in combination with a comparison operator:
+
+          4 % 2 == 0; <- returns True
+          4 % 3 == 0; <- returns False
+          ```
+    * One common place to use Modulo (or the % operator) is when checking whether a number is divisible by another number.
+        * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
+    * Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
+        
+
+
+## **References** (raw, will sort and format later)
 
 * https://github.com/jwasham/coding-interview-university
 * https://www.amazon.com/Write-Great-Code-Understanding-Machine/dp/1593270038
