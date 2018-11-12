@@ -28,6 +28,42 @@ I am doing this for myself first and foremost; not anyone else.
 * Web Apps & Servers
 * Math
 
+## General Definitions
+* <details>
+    <summary><b>Lambda
+    </b></summary>
+    
+    In computer programming, an anonymous function (or lambda expression) is a function that has no identifier <a href="https://thepythonguru.com/python-lambda-function/">(source).</a>
+
+    * Usually not more than a single line in length.
+    * Can't contain more than one expression.
+
+        * Lets check out an example:
+            ```
+            The function version:
+
+            def multiply(x, y):
+            return x * y
+            ```
+
+            This verison is too small, so let's convert it to a lambda. To create a lambda function, first write keyword lambda followed by one of more arguments separated by comma and followed by colon sign ( : ), which is then followed by a single line expression. See below:
+
+            ```
+            The lambda version:
+
+            r = lambda x, y: x * y
+            r(12, 3)   # call the lambda function
+            >>> 36
+            ```
+
+            We can even call the lambda function without assigning it to a variable:
+
+            ```
+            (lambda x, y: x * y)(12, 3)
+            >>> 36
+            ```
+    </details>
+
 ## [1] **Low-level Knowledge**
 
 <details>
@@ -65,7 +101,7 @@ I am doing this for myself first and foremost; not anyone else.
 ## [2] **Data Structures**
 
 <details>
-<summary><b>Hash Tables</b></summary>
+<summary><b>Hash Tables (Hash Maps)</b></summary>
 
 ### Time Complexity
 
@@ -83,6 +119,15 @@ I am doing this for myself first and foremost; not anyone else.
 Hash Tables, or more commonly implemented as dictionaries in Python, are a type of data structure that stores key-value pairs where the key is generated through a hashing function. This improves the functionality of lookups by a significant margin as the key values themselves act as the index of the array which stores the data. A picture says a thousand words:
 
 ```
+>>> a = dict(one=1, two=2, three=3)
+>>> b = {'one': 1, 'two': 2, 'three': 3}
+>>> c = dict(zip(['one', 'two', 'three'], [1, 2, 3]))
+>>> d = dict([('two', 2), ('one', 1), ('three', 3)])
+>>> e = dict({'three': 3, 'one': 1, 'two': 2})
+>>> a == b == c == d == e
+True
+
+
 dict = {'Name': 'Cooper', 'Focus': 'Comp Sci Fundamentals'}
 
 print(dict['Name'], dict['Focus'])
@@ -100,6 +145,8 @@ print(dict['Name'], dict['Focus'])
 2. <a href="https://stackoverflow.com/questions/114830/is-a-python-dictionary-an-example-of-a-hash-table">Is a Python Dictionary an example of a Hash Table (text)</a>
 3. <a href="http://www.laurentluce.com/posts/python-dictionary-implementation/">Why doesn't Python have a real hashing function?</a>
 4. <a href="http://www.wellho.net/mouth/3934_Multiple-identical-keys-in-a-Python-dict-yes-you-can-.html">Multiple Dict Keys in Python</a>
+5. <a href="https://stackoverflow.com/questions/19588290/python-equivalent-for-hashmap">Python Equivalent for Hash Map (text)</a>
+6. <a href="https://stackoverflow.com/questions/2548000/how-to-sort-a-dictionary-having-keys-as-a-string-of-numbers-in-python">Sort Dict by Key (Python)</a>
 
 ### Notes
 
@@ -794,20 +841,185 @@ In the past, traditional DBMS's only support a data model consisting of a collec
 ### Bite Size Overview
 
 ---
+Designed to enable communications between clients and their servers. HTTP works as a request -> response protocol where the web browser is the client and an application on a computer that hosts the web site may be the server.
+
+Chrome Dev Tools is a great way to watch how the browser interacts with a server backend (Chrome Dev Tools -> Network -> XHR).
 
 ### Videos & Links
 
 ---
 
-1. 
+1. <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">Client Side Programming</a>
+2. <a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Introduction">Server Side Programming</a>
+3. <a href="https://www.telerik.com/download/fiddler">Fiddler (HTTP debugging software)</a>
 
 ### Notes
 
 ---
+Clients (web browers) communicate by sending HTTP requests to the server and they can request a basic number of actions to be performed:
+* `GET`
+    * Fetch a specific resource.
+        * _This could be returning a relevant HTML file or a list of products._
+* `POST`
+    * Create a specific resource.
+        * _This could be whenever a user signs up for a website._
+* `HEAD`
+    * Fetch the metadata information about a specific resource without getting the body.
+        * _This could be fetching a resource to check when it was last updated. Then we could use the expensive `GET` request to download the resource when it has changed._
+* `PUT`
+    * Update an existing resource (or create one if it doesn't exist).
+        * _This could be whenever you click "update" to change your username on a website._
+* `DELETE`
+    * Delete the specified resource.
+        * _This could be whenever you click "remove item" from your shopping cart._
+
+Other terms you may come across are `TRACE`, `OPTIONS`, `CONNECT` and `PATCH`, but those are uncommon enough that they aren't worth touching on right now.
+
+Web servers will wait (listen) for requests from the client, process them when they arrive, provide the correct HTTP response message and a HTTP response status code (200, 404, etc). Any corresponding JavaScript or CSS will be requested and downloaded during this time as well.
+
+This is how both dynamic and static website communicate, so it is crucial to understand these communication protocols.
+
+<details>
+<summary>Let's take a look at an example of a <b>`GET` request</b>:</summary>
+
+```
+GET https://developer.mozilla.org/en-US/search?q=client+server+overview&topic=apps&topic=html&topic=css&topic=js&topic=api&topic=webdev HTTP/1.1
+Host: developer.mozilla.org
+Connection: keep-alive
+Pragma: no-cache
+Cache-Control: no-cache
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Referer: https://developer.mozilla.org/en-US/
+Accept-Encoding: gzip, deflate, sdch, br
+Accept-Charset: ISO-8859-1,UTF-8;q=0.7,*;q=0.7
+Accept-Language: en-US,en;q=0.8,es;q=0.6
+Cookie: sessionid=6ynxs23n521lu21b1t136rhbv7ezngie; csrftoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT; dwf_section_edit=False; dwf_sg_task_completion=False; _gat=1; _ga=GA1.2.1688886003.1471911953; ffo=true
+```
+
+The first and second lines contain most of the information we talked about above:
+
+* The type of request (GET).
+* The target resource URL (/en-US/search).
+* The URL parameters (q=client%2Bserver%2Boverview&topic=apps&topic=html&topic=css&topic=js&topic=api&topic=webdev).
+* The target/host website (developer.mozilla.org).
+* The end of the first line also includes a short string identifying the specific protocol version (HTTP/1.1).
+* The final line contains information about the client-side cookies — you can see in this case the cookie includes an id for managing sessions (Cookie: sessionid=6ynxs23n521lu21b1t136rhbv7ezngie; ...).
+
+The remaining lines contain information about the browser used and the sort of responses it can handle. For example, you can see here that:
+
+* My browser (User-Agent) is Mozilla Firefox (Mozilla/5.0).
+* It can accept gzip compressed information (Accept-Encoding: gzip).
+* It can accept the specified set of characters (Accept-Charset: ISO-8859-1,UTF-8;q=0.7,*;q=0.7) and languages (Accept-Language: de,en;q=0.7,en-us;q=0.3).
+* The Referer line indicates the address of the web page that contained the link to this resource (i.e. the origin of the request, https://developer.mozilla.org/en-US/).
+
+HTTP requests can also have a body, but it is empty in this case (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
+
+</details>
+
+<details>
+<summary>And the same for a <b>`GET` response</b>:</summary>
+
+```
+HTTP/1.1 200 OK
+Server: Apache
+X-Backend-Server: developer1.webapp.scl3.mozilla.com
+Vary: Accept,Cookie, Accept-Encoding
+Content-Type: text/html; charset=utf-8
+Date: Wed, 07 Sep 2016 00:11:31 GMT
+Keep-Alive: timeout=5, max=999
+Connection: Keep-Alive
+X-Frame-Options: DENY
+Allow: GET
+X-Cache-Info: caching
+Content-Length: 41823
+
+
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr" class="redesign no-js"  data-ffo-opensanslight=false data-ffo-opensans=false >
+<head prefix="og: http://ogp.me/ns#">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+  <script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  ...
+```
+
+The first part of the response for this request is shown below. The header contains information like the following:
+
+* The first line includes the response code 200 OK, which tells us that the request succeeded.
+We can see that the response is text/html formatted (Content-Type).
+* We can also see that it uses the UTF-8 character set (Content-Type: text/html; charset=utf-8).
+The head also tells us how big it is (Content-Length: 41823).
+* At the end of the message we see the body content — which contains the actual HTML returned by the request.
+
+The remainder of the truncated response header includes information like when it was generated, the server, how it expect to handle the page and more (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
+
+</details>
+
+<details>
+<summary>Now let's check out a <b>`POST` request</b>:</summary>
+
+```
+POST https://developer.mozilla.org/en-US/profiles/hamishwillee/edit HTTP/1.1
+Host: developer.mozilla.org
+Connection: keep-alive
+Content-Length: 432
+Pragma: no-cache
+Cache-Control: no-cache
+Origin: https://developer.mozilla.org
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36
+Content-Type: application/x-www-form-urlencoded
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+Referer: https://developer.mozilla.org/en-US/profiles/hamishwillee/edit
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.8,es;q=0.6
+Cookie: sessionid=6ynxs23n521lu21b1t136rhbv7ezngie; _gat=1; csrftoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT; dwf_section_edit=False; dwf_sg_task_completion=False; _ga=GA1.2.1688886003.1471911953; ffo=true
+
+csrfmiddlewaretoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT&user-username=hamishwillee&user-fullname=Hamish+Willee&user-title=&user-organization=&user-location=Australia&user-locale=en-US&user-timezone=Australia%2FMelbourne&user-irc_nickname=&user-interests=&user-expertise=&user-twitter_url=&user-stackoverflow_url=&user-linkedin_url=&user-mozillians_url=&user-facebook_url=
+```
+
+The biggest difference you may have noticed is that the URL doesn't contain any paramaters. At the bottom of the request you can see that that the information from the form is encoded as a body in the request (`&user-fullname=Hamish+Willee`)
+ (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
+
+</details>
+
+<details>
+<summary>And the same for a <b>`POST` response</b>:</summary>
+
+```
+HTTP/1.1 302 FOUND
+Server: Apache
+X-Backend-Server: developer3.webapp.scl3.mozilla.com
+Vary: Cookie
+Vary: Accept-Encoding
+Content-Type: text/html; charset=utf-8
+Date: Wed, 07 Sep 2016 00:38:13 GMT
+Location: https://developer.mozilla.org/en-US/profiles/hamishwillee
+Keep-Alive: timeout=5, max=1000
+Connection: Keep-Alive
+X-Frame-Options: DENY
+X-Cache-Info: not cacheable; request wasn't a GET or HEAD
+Content-Length: 0
+```
+
+Short and sweet :). The response status code of `302 FOUND` let's us know that the `POST` succeeded, and that it must issue a second request to load the page specified in the `Location` field (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
+</details>
+
+A static site will only ever need to process `GET` requests as the server does not store any modifiable data, nor does it change its data based on the contents of an HTTP request (URL paramaters or cookies).
+
+Dynamic sites handle requests for static files in the exact same way static sites sites do, but have the added bonus of allowing you to create HTML templates and insert the dynamic content into them whenever necessary. This means you can have one "Product" template that was used to render whatever product a user searched, eliminating the need to create potentially thousands of individual HTML files for each product.
+
+This was just a brief overview of how a web client and a server communicate, but it should prove a decent foundation for now.
 
 ### Summary
 
 ---
+Web clients and servers communicate through a series of HTTP requests, most commonly `GET`, `HEAD`, `POST`, `UPDATE` and `DELETE`. The server performs an action based on what the client is requesting of it, be it creating a new account, deleting a user, changing your username or something else entirely.
+
+Chrome Dev Tools or Fiddler are both good options for exploring how websites interact in more detail.
+
 </details>
     
 <details>
@@ -865,7 +1077,11 @@ The **controller** acts on both the **model** (to update state) and the **view**
 ### Bite Size Overview
 
 ---
-Web frameworks are libraries of server-side languages that contruct the back-end structure of a site. Web frameworks aim to automate the overhead services associated with common activities performed in web application (and abstract away low-level issues like protocols and sockets).
+Server-side Web Frameworks exist to make writing code and operations like we covered in the HTTP protocal section _much_ easier.
+
+One of the most important operations they perform is simply mapping URLs to different resources/pages with special handler functions.
+
+This makes it easier to keep the code associated with each type of resource separate. It also has benefits in terms of maintenance, because you can change the URL used to deliver a particular feature in one place, without having to change the handler function.
 
 ### Videos & Links
 
@@ -888,9 +1104,53 @@ Below are a few of the more common tasks that web frameworks can handle for you:
 
 Depending on the size of your application, you may end up outright removing or simply creating your own versions of the functions. The point is that some web frameworks come as "battery-included" libraries like Django, which means they come bundled with every feature off the bat, and others like Flask, which are light-weight and tend to only give you what you need.
 
-There are pros and cons to all of the different web frameworks, so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Django. There are plenty of other examples, but these are the two situations that are the most straightforward.
+<details>
+<summary>Django Example</summary>
 
-The personal preference is slanted towards Flask, particularly with how simply one can both build, expand, and maintain API's.
+For example, consider the following Django code that maps two URL patterns to two view functions. The first pattern ensures that an HTTP request with a resource URL of /best will be passed to a function named index() in the views module. A request that has the pattern "/best/junior", will instead be passed to the junior() view function.
+
+```
+# file: best/urls.py
+
+from django.conf.urls import url
+
+from . import views
+
+urlpatterns = [
+    # example: /best/
+    url(r'^$', views.index),
+    # example: /best/junior/
+    url(r'^junior/$', views.junior),
+]
+```
+
+The web framework also makes it easy for a view function to fetch information from the database. The structure of our data is defined in models, which are Python classes that define the fields to be stored in the underlying database. If we have a model named Team with a field of "team_type" then we can use a simple query syntax to get back all teams that have a particular type.
+
+The example below gets a list of all teams that have the exact (case sensitive) team_type of "junior" — note the format: field name (team_type) followed by double underscore, and then the type of match to use (in this case exact). There are many other types of matches and we can daisy chain them. We can also control the order and the number of results returned.
+
+```
+# file: best/views.py
+
+from django.shortcuts import render
+
+from .models import Team
+
+
+def junior(request):
+    list_teams = Team.objects.filter(team_type__exact="junior")
+    context = {'list': list_teams}
+    return render(request, 'best/index.html', context)
+```
+
+After the junior() function gets the list of junior teams, it calls the render() function, passing the original HttpRequest, an HTML template, and a "context" object defining the information to be included in the template. The  render() function is a convenience function that generates HTML using a context and an HTML template, and returns it in an HttpResponse object.
+
+Obviously web frameworks can help you with a lot of other tasks. We discuss a lot more benefits and some popular web framework choices in the next article (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source</a>).
+
+</details>
+
+There are pros and cons to all of the different web frameworks so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Django. There are plenty of other examples, but these are the two situations that are the most straightforward.
+
+My personal preference is slanted towards Flask, particularly with how simply one can both build, expand, and maintain API's.
 
 **There is a spectrum between minimal functionality with easy extensibility on one end and including everything in the framework with tight integration on the other end.**
 
@@ -898,7 +1158,6 @@ The personal preference is slanted towards Flask, particularly with how simply o
 
 ---
 Web frameworks assist developers by abstracting away low-level processes and providing libraries with modules that will aid in the development of a web application. They are meant to aid you in both quickly scaffolding an application and in managing automate away a lot of overhead services, but keep in mind that those with the "batteries-included" approach can come with a tightly coupled internal set of packages or modules that may not be efficient for what you are trying to achieve.
-
 </details>
 
 <details>
