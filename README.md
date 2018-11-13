@@ -12,9 +12,9 @@ I am doing this for myself first and foremost; not anyone else.
 
 ## Inspiration (videos & text)
 
-* http://www.aaronsw.com/weblog/dweck
-* https://medium.freecodecamp.org/why-i-studied-full-time-for-8-months-for-a-google-interview-cc662ce9bb13
-* https://www.youtube.com/watch?v=YJZCUhxNCv8
+* <a href="http://www.aaronsw.com/weblog/dweck">Fixed vs. Growth Mindset</a>
+* <a href="https://medium.freecodecamp.org/why-i-studied-full-time-for-8-months-for-a-google-interview-cc662ce9bb13">The blueprint I am basing this guide off</a>
+* <a href="https://www.youtube.com/watch?v=YJZCUhxNCv8">Getting a Job at the Big 4 _(sensational title, but solid talk)_</a>
 
 ## Task List (will be constantly expanded upon and updated)
 
@@ -28,41 +28,69 @@ I am doing this for myself first and foremost; not anyone else.
 * Web Apps & Servers
 * Math
 
-## General Definitions
-* <details>
-    <summary><b>Lambda
+## Language Breakdown
+
+<details>
+    <summary><b>Python
     </b></summary>
-    
-    In computer programming, an anonymous function (or lambda expression) is a function that has no identifier <a href="https://thepythonguru.com/python-lambda-function/">(source).</a>
+Python is an example of high-level language (as opposed to a low-level language). Before we move any further, let's break down the different between a high and low level language:
 
-    * Usually not more than a single line in length.
-    * Can't contain more than one expression.
+* High-level language
+    * Python, C++, Java
 
-        * Lets check out an example:
-            ```
-            The function version:
+* Low-level language
+    * **Machine language**
+        * The process of encoding instructions in binary so that a computer can directly execute them.
+    * **Assembly language**
+        * Uses a slightly easier format to refer to the low level instructions (abstracts things a bit).
 
-            def multiply(x, y):
+</details>
+
+## General Definitions
+
+<details>
+<summary><b>Algorithm
+</b></summary>
+"If problem solving is a central part of computer science, then the solutions that you create through the problem solving process are also important. In computer science, we refer to these solutions as <b>algorithms</b>. An algorithm is a step by step list of instructions that if followed exactly will solve the problem under consideration.
+
+Our goal in computer science is to take a problem and develop an algorithm that can serve as a general solution. Once we have such a solution, we can use our computer to automate the execution. As noted above, programming is a skill that allows a computer scientist to take an algorithm and represent it in a notation (a program) that can be followed by a computer. These programs are written in programming languages." - <a href="https://interactivepython.org/runestone/static/thinkcspy/GeneralIntro/Algorithms.html">source</a>
+
+</details>
+<details>
+<summary><b>Lambda
+</b></summary>
+
+In computer programming, an anonymous function (or <b>lambda</b> expression) is a function that has no identifier <a href="https://thepythonguru.com/python-lambda-function/">(source).</a>
+
+* Usually not more than a single line in length.
+* Can't contain more than one expression.
+
+    * Lets check out an example:
+        ```
+        The function version:
+
+        def multiply(x, y):
             return x * y
-            ```
+        ```
 
-            This verison is too small, so let's convert it to a lambda. To create a lambda function, first write keyword lambda followed by one of more arguments separated by comma and followed by colon sign ( : ), which is then followed by a single line expression. See below:
+        This verison is too small, so let's convert it to a lambda. To create a lambda function, first write keyword lambda followed by one of more arguments separated by comma and followed by colon sign ( : ), which is then followed by a single line expression. See below:
 
-            ```
-            The lambda version:
+        ```
+        The lambda version:
 
-            r = lambda x, y: x * y
-            r(12, 3)   # call the lambda function
-            >>> 36
-            ```
+        r = lambda x, y: x * y
 
-            We can even call the lambda function without assigning it to a variable:
+        r(12, 3)  # call the lambda function
+        >>> 36
+        ```
 
-            ```
-            (lambda x, y: x * y)(12, 3)
-            >>> 36
-            ```
-    </details>
+        We can even call the lambda function without assigning it to a variable:
+
+        ```
+        (lambda x, y: x * y)(12, 3)
+        >>> 36
+        ```
+</details>
 
 ## [1] **Low-level Knowledge**
 
@@ -182,6 +210,7 @@ On the simplest level, a Linked List is really just a bunch of connected nodes (
 2. <a href="https://www.youtube.com/watch?v=6sBsF13n5ig"> Linked Lists in Python (video)</a>
 3. <a href="https://stackoverflow.com/questions/39585740/how-can-i-print-all-of-the-values-of-the-nodes-in-my-singly-linked-list-using-a">Linked Lists - StackOverflow (text)</a>
 4. <a href="https://stackoverflow.com/questions/39585740/how-can-i-print-all-of-the-values-of-the-nodes-in-my-singly-linked-list-using-a">Printing a Singly-Linked List (text)</a>
+5. <a href="https://stackoverflow.com/questions/280243/python-linked-list">Python Linked List (text)</a>
 
 ### Notes
 
@@ -527,6 +556,26 @@ This is just a high level overview, but it still provides a good baseline for wo
 ---
 Matrices are two-dimensional data structures that allow us to store data in the forms of columns and rows. The most common place to encounter matrices are in the form of questions surrounding 2D arrays (which is basically a matrix).
 
+</details>
+
+<details>
+<summary><b>Binary Trees</b></summary>
+</details>
+
+<details>
+<summary><b>Graphs</b></summary>
+</details>
+
+<details>
+<summary><b>Stacks</b></summary>
+</details>
+
+<details>
+<summary><b>Queues</b></summary>
+</details>
+
+<details>
+<summary><b>Heaps</b></summary>
 </details>
 
 ## [3] **Algorithms**
@@ -1007,6 +1056,7 @@ Content-Length: 0
 Short and sweet :). The response status code of `302 FOUND` let's us know that the `POST` succeeded, and that it must issue a second request to load the page specified in the `Location` field (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
 </details>
 
+
 A static site will only ever need to process `GET` requests as the server does not store any modifiable data, nor does it change its data based on the contents of an HTTP request (URL paramaters or cookies).
 
 Dynamic sites handle requests for static files in the exact same way static sites sites do, but have the added bonus of allowing you to create HTML templates and insert the dynamic content into them whenever necessary. This means you can have one "Product" template that was used to render whatever product a user searched, eliminating the need to create potentially thousands of individual HTML files for each product.
@@ -1148,6 +1198,7 @@ Obviously web frameworks can help you with a lot of other tasks. We discuss a lo
 
 </details>
 
+
 There are pros and cons to all of the different web frameworks so I would highly recommend that you spend some time detailing out the exact nature of your problem and what framework would assist you in the most efficient manner. If you just have a small application that runs locally then you do not need to over-optimize and you should likely stick with a minimimalistic web framework like Flask. If you know you need built in ORM functionality or streamlines modules that you don't have the time to create from the ground up, something more "batteries-included" would be a great choice, like Django. There are plenty of other examples, but these are the two situations that are the most straightforward.
 
 My personal preference is slanted towards Flask, particularly with how simply one can both build, expand, and maintain API's.
@@ -1185,22 +1236,24 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 
 ## [9] **Math**
 
-* **Modulo**
-    * Modulo returns the remainder (modulus), not the quotient, between two values.
-        * ```
-          4 % 2; <- returns 0
-          4 % 3; <- returns 1
+<details>
+<summary><b>Modulo
+</b></summary>
+* Modulo returns the remainder (modulus), not the quotient, between two values.
+    * ```
+        4 % 2; <- returns 0
+        4 % 3; <- returns 1
 
-          This is commonly used in combination with a comparison operator:
+        This is commonly used in combination with a comparison operator:
 
-          4 % 2 == 0; <- returns True
-          4 % 3 == 0; <- returns False
-          ```
-    * One common place to use Modulo (or the % operator) is when checking whether a number is divisible by another number.
-        * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
-    * Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
-        
-
+        4 % 2 == 0; <- returns True
+        4 % 3 == 0; <- returns False
+        ```
+* One common place to use Modulo (or the % operator) is when checking whether a number is divisible by another number.
+    * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
+* Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
+</details>
+* Long-term TODO: Learn about set theory, finite-state machines, regular expressions, matrix multiplication, bitwise operations, solving linear equations, important combinatorics concepts such as permutations, combinations, pigeonhole principle.
 
 ## **References** (raw, will sort and format later)
 
@@ -1222,5 +1275,10 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 * http://www.postgresqltutorial.com/postgresql-foreign-key/
 * https://stackoverflow.com/questions/18211694/data-structure-model-of-score-keeping-app-for-games-avoiding-many-to-many-to-ma
 * https://static.simonwillison.net/static/2010/redis-tutorial/
+* https://docs.python.org/3/library/collections.html#collections.deque
+* https://medium.com/coderbyte/how-to-get-good-at-algorithms-data-structures-d33d5163353f
+* https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/
+* https://techdevguide.withgoogle.com/
+* https://interactivepython.org/runestone/static/thinkcspy/index.html
 
 _If you somehow ended up here, thanks for checking it out and I hope you find it helpful <3._
