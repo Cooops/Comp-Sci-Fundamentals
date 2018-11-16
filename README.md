@@ -1,14 +1,14 @@
 # **Computer Science Fundamentals** (work in progress)
 
-This will serve as a repository for publically measuring my progress both learning and brushing up on Computer Science fundamentals.
+This will serve as a repository for publicly measuring my progress both learning and brushing up on Computer Science fundamentals.
 
 ## Synopsis
 
-I want to improve my fundamental knowledge over the course of the next 6-12 months, rounding out any core Computer Science (see Task List below for specifics) related information I am lacking. This will be a long-term venture with plenty of notes, videos, articles, and of course code samples along the way. I will start out coding in Python, but will likely blend in C-related langauges down the line.
+I want to improve my fundamental knowledge over the course of the next 6-12 months, rounding out any core Computer Science (see Task List below for specifics) related information I am lacking. This will be a long-term venture with plenty of notes, videos, articles, and of course code samples along the way. I will start out coding in Python, but will likely blend in C-related languages down the line.
 
 I am doing this for myself first and foremost; not anyone else.
 
-> "Learning is not attended by chance, it must be sought for with ardor and dilligence." - Abigail Adams
+> "Learning is not attended by chance, it must be sought for with ardor and diligence." - Abigail Adams
 
 ## Inspiration (videos & text)
 
@@ -53,6 +53,7 @@ Python is an example of high-level language (as opposed to a low-level language)
 </b></summary>
 "If problem solving is a central part of computer science, then the solutions that you create through the problem solving process are also important. In computer science, we refer to these solutions as <b>algorithms</b>. An algorithm is a step by step list of instructions that if followed exactly will solve the problem under consideration.
 
+
 Our goal in computer science is to take a problem and develop an algorithm that can serve as a general solution. Once we have such a solution, we can use our computer to automate the execution. As noted above, programming is a skill that allows a computer scientist to take an algorithm and represent it in a notation (a program) that can be followed by a computer. These programs are written in programming languages." - <a href="https://interactivepython.org/runestone/static/thinkcspy/GeneralIntro/Algorithms.html">source</a>
 
 </details>
@@ -73,7 +74,7 @@ In computer programming, an anonymous function (or <b>lambda</b> expression) is 
             return x * y
         ```
 
-        This verison is too small, so let's convert it to a lambda. To create a lambda function, first write keyword lambda followed by one of more arguments separated by comma and followed by colon sign ( : ), which is then followed by a single line expression. See below:
+        This verison is too small, so let's convert it to a lambda. To create a lambda function, first denote the keyword `lambda` followed by one of more arguments separated by comma and followed by colon sign ( : ), which is then followed by a single line expression. See below:
 
         ```
         The lambda version:
@@ -90,6 +91,207 @@ In computer programming, an anonymous function (or <b>lambda</b> expression) is 
         (lambda x, y: x * y)(12, 3)
         >>> 36
         ```
+</details>
+<details>
+<summary><b>Recursion
+</b></summary>
+
+A recursive function is essentially just a function that will continue to call itself until it some condition is met to return a result <a href="https://realpython.com/python-thinking-recursively/">(source).</a>
+
+Let's say we wanted to recursively calculate n! (factorial) in Python:
+
+```
+def factorial_recursive(n):
+    # Base case: 1! = 1
+    if n == 1:
+        return 1
+
+    # Recursive case: n! = n * (n-1)!
+    else:
+        return n * factorial_recursive(n-1)  # recursively call function while subtracting 1 from n each time (will continue until we reach 0)
+>>> 120
+```
+
+```
+# adding stack frame to call stack
+# factorial_recursive(1)
+# factorial_recursive(2)
+# factorial_recursive(3)
+# factorial_recursive(4)
+# factorial_recursive(5)
+
+# 5*4*3*2*1
+
+# unwinding call stack
+# 1 * 2
+# 2 * 3
+# 6 * 4
+# 24 * 5
+# hit end of call stack, returns 120
+```
+
+Each recursive call will add a stack frame to the call stack until we reach the base case. Then, the stack begins to unwind as each call returns the result (as you can see in the above example, or a much better one on <a href="https://realpython.com/python-thinking-recursively/">this page</a>).
+
+#### State
+
+Each recursive call contains its own execution context, so in order to maintain state we need to do a few things:
+
+1. Thread the state through each recursive call so that the current state is part of the current call's execution content.
+2. Keep the state in a global scope.
+
+Let's say we had to calculate 1+2+3...+10 using recursion. We need to maintain the state -- the current number we are adding & the accumulate sum until now.
+
+Let's look at an example where we pass (thread) the updated current state to each recursive call as arguments:
+
+```
+def sum_recursive(current_number, accumulated_sum):
+    # return the final state
+    if current_number == 11:  # base case
+        return accumulated_sum
+
+    # recursive case
+    # thread the state through the recursive call
+    else:
+        return sum_recursive(current_number + 1, accumulated_sum + current_number)
+
+print(sum_recursive(1, 0))
+>>> 55
+```
+
+![control flow with threaded state](https://files.realpython.com/media/state_3.3e8a68c4fde5.png)
+
+and similarly, here's how you would maintain by utilizing a global scope:
+
+```
+# global mutable state
+current_number = 1
+accumulated_sum = 0
+
+def sum_recursive_global():
+    global current_number
+    global accumulated_sum
+    if current_number == 11:  # base case
+        return accumulated_sum
+    # recursive case
+    else:
+        accumulated_sum = accumulated_sum + current_number
+        current_number = current_number + 1
+        return sum_recursive_global()
+
+print(sum_recursive_global())
+>>> 55
+```
+
+In general, threading will keep your code much cleaner, less bug prone and more maintainable for others.
+
+#### Recursive Data Structures
+
+A data structure is defined as recursive if it can be defined in smaller terms of a smaller version of itself. One example is a list, as explained below.
+
+If we were to start with an empty list and were only able to perform the following operation...
+
+```
+# return a new list that is the result of
+# adding element to the head (i.e. front) of input_list
+def attach_head(element, input_list):
+    return [element] + input_list
+```
+
+...we could use the `attach_head` function to generate any list of any size. For example, if we wanted to return the list `[1, 46, -31, 'hello']`:
+
+```
+attach_head(1, attach_head(46, attach_head(-31, attach_head("hello", []))))
+
+# unwinding the call stack
+# ['hello']
+# [-31, 'hello']
+# [46, -31, 'hello']
+# [1, 46, -31, 'hello']
+```
+
+We can also perform the following recursive implementations with other data structures like sets, trees, dictionaries and more.
+
+These recursive data functions and recursive data structures balance each-other perfectly; like yin and yang.
+
+The recursive function’s structure can often be modeled after the definition of the recursive data structure it takes as an input. Let's see how the writer implemented this example of calculating the sum of all lists recursively:
+
+```
+def list_sum_recursive(input_list):
+    # base case
+    if input_list == []:
+        return 0
+    # recursive case
+    # decompose the original problem into simpler instances of the same problem
+    # by making use of the fact that the input is a recursive data structure
+    # and can be deﬁned in terms of a smaller version of itself
+    else:
+        head = input_list[0]
+        smaller_list = input_list[1:]
+        return head + list_sum_recursive(smaller_list)
+
+print(list_sum_recursive([1,2,3]))
+>>> 6
+```
+
+#### Naive recursion
+
+Let's look at an example for creating a function to calculate the nth Fibonacci number:
+
+```
+def fibonacci_recursive(n):
+    print("Calculating F", "(", n, ")", sep="", end=", ")
+
+    # base case
+    if n == 0:
+        return 0
+    elif n == 1:
+        return 1
+
+    # becursive case
+    else:
+        return fibonacci_recursive(n-1) + fibonacci_recursive(n-2)
+
+fibonnaci_recursive(5)
+>>> Calculating F(5), Calculating F(4), Calculating F(3), Calculating F(2), Calculating F(1), Calculating F(0), Calculating F(1), Calculating F(2), Calculating F(1), Calculating F(0), Calculating F(3), Calculating F(2), Calculating F(1), Calculating F(0), Calculating F(1), 5
+```
+
+As we can see in the above example, we are unnecessarily recomputing values. Let's try to improve this function by caching the results of each computation:
+
+```
+from functools import lru_cache
+
+@lru_cache(maxsize=None)
+def fibonacci_recursive_cache(n):
+    print("Calculating F", "(", n, ")", sep="", end=", ")
+
+    # base case
+    if n < 2:
+        return n
+
+    # recursive case
+    else:
+        return fibonacci_recursive_cache(n-1) + fibonacci_recursive_cache(n-2)
+
+print(fibonacci_recursive_cache(5))
+>>> 5
+```
+
+More about memoization and caching <a href="https://mike.place/2016/memoization/">here</a>, but `lru` essentially stands for least-recently-used and it is a FIFO approach to managing the size of a cache. Fundamentally, this is the same as manually incorporating a memoize function but instead allows you to just import it and wrap your function in the respective decorator.
+
+The only thing to keep is mind is that `lru_cache` utilizes a dictionary to cache results, so positional and keyword arguments (keys) to the function must be hashable.
+
+#### Corner cases/details
+
+Python doesn't have built-in support for a <a href="https://en.wikipedia.org/wiki/Tail_call">tail-call elimination</a>. This means you can cause a stack overflow if you end up adding more stack frames than the default call stack depth:
+
+```
+import sys
+sys.getrecursionlimit()
+>>> 3000
+```
+
+This limitation is important to keep in mind if you are working with a program that requires deep recursion.
+
 </details>
 
 ## [1] **Low-level Knowledge**
@@ -201,6 +403,9 @@ On the simplest level, a Linked List is really just a bunch of connected nodes (
 
 * a value (int, str, objects, etc)
 * a pointer to the next node in the sequence
+
+Python lists are resizable, C++ arrays are not
+C++ arrays are a contiguous allocation of objects in memory, Python lists are a contiguous allocation of references in memory
 
 ### Videos & Links
 
@@ -1239,16 +1444,18 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 <details>
 <summary><b>Modulo
 </b></summary>
-* Modulo returns the remainder (modulus), not the quotient, between two values.
-    * ```
-        4 % 2; <- returns 0
-        4 % 3; <- returns 1
+Modulo returns the remainder (modulus), not the quotient, between two values.
 
-        This is commonly used in combination with a comparison operator:
+```
+4 % 2; <- returns 0
+4 % 3; <- returns 1
 
-        4 % 2 == 0; <- returns True
-        4 % 3 == 0; <- returns False
-        ```
+This is commonly used in combination with a comparison operator:
+
+4 % 2 == 0; <- returns True
+4 % 3 == 0; <- returns False
+```
+
 * One common place to use Modulo (or the % operator) is when checking whether a number is divisible by another number.
     * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
 * Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
@@ -1280,5 +1487,9 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 * https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-006-introduction-to-algorithms-fall-2011/lecture-videos/
 * https://techdevguide.withgoogle.com/
 * https://interactivepython.org/runestone/static/thinkcspy/index.html
+* https://onedrive.live.com/redir?resid=8D59514B5DBE9460%21171239&authkey=%21AAYudHw4Jy57cpY&page=View&wd=target%28README.one%7C7913485d-edef-4437-a685-c7deb73218aa%2FAbout%20this%20notebook%7C81ffa585-e123-47fd-b5a8-0b721f8aa357%2F%29
+* https://realpython.com/python-thinking-recursively/
+* https://realpython.com/python-memcache-efficient-caching/
+* https://mike.place/2016/memoization/
 
 _If you somehow ended up here, thanks for checking it out and I hope you find it helpful <3._
