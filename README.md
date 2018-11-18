@@ -1,12 +1,12 @@
 # **Computer Science Fundamentals** (work in progress)
 
-This will serve as a repository for publicly measuring my progress both learning and brushing up on Computer Science fundamentals.
+This will serve as a repository for my notes, both new and old, surrounding Computer Science fundamentals.
 
 ## Synopsis
 
-I want to improve my fundamental knowledge over the course of the next 6-12 months, rounding out any core Computer Science (see Task List below for specifics) related information I am lacking. This will be a long-term venture with plenty of notes, videos, articles, and of course code samples along the way. I will start out coding in Python, but will likely blend in C-related languages down the line.
+I want to improve my fundamental knowledge over the course of the next 6-12 months, rounding out any core Computer Science (see Task List below for specifics) related information I am lacking. This will be a long-term venture with plenty of notes, videos, articles, and of course code samples along the way. Most of the code within my notes will be Python, but I will likely blend in C-related languages in the future..
 
-I am doing this for myself first and foremost; not anyone else.
+I am doing this for myself first and foremost, not anyone else.
 
 > "Learning is not attended by chance, it must be sought for with ardor and diligence." - Abigail Adams
 
@@ -16,7 +16,11 @@ I am doing this for myself first and foremost; not anyone else.
 * <a href="https://medium.freecodecamp.org/why-i-studied-full-time-for-8-months-for-a-google-interview-cc662ce9bb13">The blueprint I am basing this guide off</a>
 * <a href="https://www.youtube.com/watch?v=YJZCUhxNCv8">Getting a Job at the Big 4 _(sensational title, but solid talk)_</a>
 
-## Task List (will be constantly expanded upon and updated)
+## Reminder To Self
+
+Don't feel overwhelmed at the feeling that you have an exorbitant about of information to digest; there's way too much to know, and nobody knows everything.
+
+## Task List _(will be constantly expanded upon)_
 
 * Low-level knowledge
 * Operating Systems
@@ -31,19 +35,335 @@ I am doing this for myself first and foremost; not anyone else.
 ## Language Breakdown
 
 <details>
+<summary><b>High vs Low-level
+    </b></summary>
+
+High and low refer to the level of abstraction between the two languages; **low having a low level of abstraction and high having a high level**. Everything in programming is about abstraction to some degree.
+
+* **High-level language**
+    * Python, C++, Java, etc.
+    * Easier to learn, abstracted from the machine, comes "batteries-included", access to tools like regex, databases, etc.
+* **Low-level language**
+    * Machine language
+        * The process of encoding instructions in binary so that a computer can directly execute them.
+    * Assembly language
+        * Uses a slightly easier format to refer to the low level instructions (abstracts things a bit).
+    * Harder to learn, closer to the machine, requires a high level of skill to write programs efficiently.
+</details>
+
+<details>
+<summary><b>Compiled vs Interpreted
+    </b></summary>
+
+In interpreted languages, **the code is executed from top to bottom and the result of the running code is immediately returned.** The code does not need to be transformed into a different form before it is run by the computer.
+    * Both Python and JavaScript are interpreted.
+
+On the other hand, in compiled languages the code is transformed (compiled) into another form before they are run by the computer.
+    * Both C & C++ are compiled into assembly language.
+
+Both approaches have advantages and disadvantages that I will touch on later.
+</details>
+
+<details>
     <summary><b>Python
     </b></summary>
-Python is an example of high-level language (as opposed to a low-level language). Before we move any further, let's break down the different between a high and low level language:
 
-* High-level language
-    * Python, C++, Java
+Python is an example of high-level, general purpose language (as opposed to a low-level language). It is a great language for both beginners and experts alike.
 
-* Low-level language
-    * **Machine language**
-        * The process of encoding instructions in binary so that a computer can directly execute them.
-    * **Assembly language**
-        * Uses a slightly easier format to refer to the low level instructions (abstracts things a bit).
+### Instance vs Class variables
 
+Object-oriented-programming allows for variables to be assigned at either the class (class variables) or instance level (instance variables).
+
+Whenever we expect variables are going to be consistent across all of our instances, or whenever we would like to initialize a variable, we can define that variable at the class level. Conversely, whenever we expect the variables to change significantly across instances we should define them at the instance level.
+
+#### Class variables
+
+**Class variables are owned by the class and are thus shared with all instances of the class**. In Python, we can think of this as the rough equivalent of a static variable in another language. See the below example of a class variable (**typically placed below the class header and above the methods**, constructor or otherwise):
+
+```
+class Dude:
+    guy = 'Cooper'
+```
+
+By creating an instance of the `Dude` class we can print the variable using dot notation:
+
+```
+new_dude = Dude()
+print(new_dude.guy)
+
+>>> Cooper
+```
+
+Class variables can consist of any data type, not just a string. Class variables allow us to define variables upon constructing the class. These variables and their associated values are then accessible to each instance of the class.
+
+#### Instance variables
+
+Unlike class variables, **instance variables are owned by the instances of the class**. Why is this important? Well, each object or instance of the class will have different instance variables. **Instance variables are defined in methods (functions).** See the below example:
+
+```
+class Dude:
+    def __init__(self, guy):
+        self.guy = 'Cooper'
+```
+
+Whenever we create the above object we have to explicitly define the variables, which are passed in as parameters within the method. We can print the example in a similar dot notation fashion:
+
+```
+class Dude:
+    def __init__(self, guy):
+        self.guy = guy
+
+new_dude = Dude('Cooper')
+print(new_dude.guy)
+
+>>> Cooper
+```
+
+As you can see, the output is not 'global' so to speak, and is instead made up of the values that we initialize for the object instance of `Dude`.
+
+Because they are owned by the objects of a class, instance variables allow for each object or instance to have different values assigned to those variables. You can see how this can aid immensely when writing code that we can re-use and that is modular.
+
+#### Working with the two together
+
+It can be common to encounter a combination of the above variables, so let's take a look at an example that extends the `Dude` class we used above in further detail:
+
+```
+class Dude:
+
+    # Class variables
+    guy = 'Cooper'
+    location = 'Austin'
+
+    # Constructor method with instance variables age
+    def __init__(self, topic):
+        self.topic = topic
+
+    # Method with instance variable breaks
+    def set_breaks(self, breaks):
+        print("This user has " + str(breaks) + " breaks")
+
+
+def main():
+    # First object, set up instance variables of constructor method
+    compsci = Dude("Computer Science")
+
+    # Print out instance variable age
+    print(compsci.topic)
+
+    # Print out class variable location
+    print(compsci.location)
+
+    # Use set_breaks method and pass breaks instance variable
+    compsci.set_breaks(5)
+
+    # Print out class variable guy
+    print(compsci.guy)
+
+    # Blank space
+    print()
+
+    # First object, set up instance variables of constructor method
+    it = Dude("IT")
+
+    # Print out instance variable age
+    print(it.topic)
+
+    # Print out class variable location
+    print(it.location)
+
+    # Use set_breaks method and pass breaks instance variable
+    it.set_breaks(10)
+
+    # Print out class variable guy
+    print(it.guy)
+
+if __name__ == "__main__":
+    main()
+```
+
+After running the program we will see the following results returned to us:
+
+```
+>>> Computer Science
+>>> Austin
+>>> This user has 5 breaks
+>>> Cooper
+
+>>> IT
+>>> Austin
+>>> This user has 10 breaks
+>>> Cooper
+```
+
+In the above example we have made use of both class and instance variables within the `Dude` class, `compsci` and `it`.
+
+### Conclusion
+
+In object-oriented-programming, there are two types of variables when dealing with classes:
+
+1. **Class variables**
+    * Objects at the class level ("global within a class").
+2. **Instance variables**
+    * Objects at the object level.
+
+This differentiation allows us to use class variables to initialize objects with a specific value assigned to variables, and use different variables for each object with instance variables.
+
+Making use of class- and instance-specific variables can ensure that our code adheres to the DRY principle to reduce repetition within code.
+
+* <a href="https://www.digitalocean.com/community/tutorials/understanding-class-and-instance-variables-in-python-3">source</a>
+
+</details>
+
+<details>
+    <summary><b>JavaScript
+    </b></summary>
+
+The JavaScript ecosystem has been and is continuing to grow at breakneck speeds. New libraries (shiny objects) are coming out all the time and, as a result, I believe the time has never been better to learn the fundamentals of how the language operates.
+
+One quick tidbit to remember: don't feel pressured to use a framework if you don't have a need for it. <a href="https://twitter.com/mislav/status/1022058279000842240?ref_src=twsrc%5Etfw%7Ctwcamp%5Etweetembed%7Ctwterm%5E1022058279000842240&ref_url=https%3A%2F%2Fsnipcart.com%2Fblog%2Flearn-vanilla-javascript-before-using-js-frameworks">GitHub removed jQuery earlier this year</a> and runs on vanilla JavaScript , and HackerNews contains only <a href="https://news.ycombinator.com/hn.js">150 lines</a> of un-minified JavaScript (yes, in total). Your site will run blazingly fast and be less error prone if you do not over-engineer your requirements through a batteries-included framework (Vue, React, Angular, etc.)
+
+Dan Abramov (co-founder of Redux) has even <a href="https://medium.com/@dan_abramov/you-might-not-need-redux-be46360cf367">made a post</a> about this exact issue, stating that sometimes their tool isn't the right one for the job.
+
+#### General Things to Remember
+
+* Javascript is a versatile language and used in both programming paradigms, functional and object-oriented.
+
+* JavaScript code can be executed both in the browser (front-end) and the server (back-end).
+
+* JavaScript manipulates HTML elements (animations, etc) by accessing the DOM.
+
+* ES (ECMAScript) is actually the blueprint convention that JavaScript is based on, and it was created to standardize JavaScript <a href="https://www.youtube.com/watch?v=9A_jkh2AKR8">source</a>.
+
+* The primary package manager is `npm` (akin to `pip`).
+
+* Babel converts your JavaScript into EMCAScript 2015 syntax and beyond.
+
+* Don't use inline JavaScript, and always add event listeners if you need this type of functionality:
+    ```
+    // won't run until the event, which in this case is the HTML
+    // being loaded, has been fired
+    document.addEventListener("DOMContentLoaded", function() {
+        ...
+    });
+    ```
+* The more modern way to do this is to use the `async` attribute (only works for external scripts), which tells the browser to continue downloading the HTML content once the `<script>` tag element has been reached. This replaces the previous method of placing JavaScript at the bottom of the body tag as well (which can cause serious performance issues for sites with a large amount of JavaScript).
+    ```
+    <script src="script.js" async></script>
+    ```
+    <details>
+    <summary><b>Async and Defer
+    </b></summary>
+
+    Two ways we can bypass the problem of the blocking script, `async` & `defer`.
+
+    * `async`
+        * Asynchronous (`async`) scripts will download the script without blocking the rendering on the page and will execute as soon as the script finishes downloading. **This does not guarantee the order in which the scripts execute**, **only that it will not stop the rest of the page from loading**. Thus, it is best to use `async` when the external scripts will run independently from each other and depend on no other script from the page.
+
+    * `defer`
+        * When we need to run the scripts in the order they appear in the page, we can use `defer`:
+
+        ```
+        <script defer src="js/script1.js"></script>
+
+        <script defer src="js/script2.js"></script>
+        ```
+
+    To summarize, **if your scripts can run independently without dependencies, use `async`**. Otherwise, **if the order of the scripts matters, we can utilize `defer`.**
+
+    </details>
+    <details>
+    <summary><b>Let and Const
+    </b></summary>
+
+    Two ways we can store the data we use is through "containers" such as `let` and `const`.
+
+    * `let`
+        * If you expect your variable to change, you would utilize the `let` identifier.
+
+        ```
+        let randomNumber = Math.floor(Math.random() * 100) + 1;
+        ...
+        let guessCount = 1;
+        let resetButton;
+        ```
+
+    * `const`
+        * If you don't expect your variable to change or simply need to to stay constant, you would utilize the `const` identifier:
+
+        ```
+        const guesses = document.querySelector('.guesses');
+        const lastResult = document.querySelector('.lastResult');
+        const lowOrHi = document.querySelector('.lowOrHi');
+
+        const guessSubmit = document.querySelector('.guessSubmit');
+        const guessField = document.querySelector('.guessField');
+        ```
+
+    In our case, we are using constants to store references to parts of our user interface; the text inside some of them might change, but the HTML elements referenced stay the same.
+
+    </details>
+<!-- 
+
+#### Understanding bind, apply and call
+
+These functions you might see in all famous libraries. These allow something called currying using which we can compose the functionality into different functions. A good JavaScript developer can tell you about these three at any time.
+
+Basically, these are the prototype methods of functions to alter behavior to achieve something. According to Chad, a JS developer, the usage is like this
+
+**Use .bind() when you want that function to later be called with a certain context, useful in events. Use .call() or .apply() when you want to invoke the function immediately, with modification of the context.**
+
+
+
+https://medium.com/dev-bits/a-perfect-guide-for-cracking-a-javascript-interview-a-developers-perspective-23a5c0fa4d0d
+
+I want to know this as well. Arrow functions are the best, and I'll fight anyone who says otherwise. You should be using them in all modern browsers... and you should be using them anyway in older browsers (with transpiled code).
+
+Closures. I liked JavaBrains tutorial on this on YouTube.
+
+Prototypes. Google just yield some good results.
+
+Asynchronous programming. One of the top things I encounter when working with JS.
+
+ES6 + features
+
+* Call Stack
+* Context
+* Scope
+* Prototype chain
+* High order functions
+* Asynchronous programming
+* Event loop -->
+
+</details>
+
+<details>
+
+<summary><b>SQL
+    </b></summary>
+
+#### Best Practices
+
+* Specify `JOIN` conditions
+    * Why? If your query is complex, the `JOIN` conditions remain with `JOIN` statement. In the first example below, imagine if there were 15 other joined tables and the `WHERE` clause had 30 other criteria in it, it would quickly become difficult to work out what's going on. - <a href="https://www.reddit.com/r/SQL/comments/6cr08b/thought_i_thought_myself_sql_well_enough_for_an/">source</a>
+
+    ```
+    # bad
+
+    SELECT *
+    FROM employee e, department d
+    WHERE e.department_id = d.id
+    ...
+    ```
+    ```
+    # good
+    
+    SELECT *
+    FROM employee e
+    INNER JOIN department d ON e.department_id = d.id
+    ...
+    ```
+
+<a href="https://www.reddit.com/r/SQL/comments/6cr08b/thought_i_thought_myself_sql_well_enough_for_an/">source</a>
 </details>
 
 ## General Definitions
@@ -51,6 +371,7 @@ Python is an example of high-level language (as opposed to a low-level language)
 <details>
 <summary><b>Algorithm
 </b></summary>
+
 "If problem solving is a central part of computer science, then the solutions that you create through the problem solving process are also important. In computer science, we refer to these solutions as <b>algorithms</b>. An algorithm is a step by step list of instructions that if followed exactly will solve the problem under consideration.
 
 
@@ -92,6 +413,7 @@ In computer programming, an anonymous function (or <b>lambda</b> expression) is 
         >>> 36
         ```
 </details>
+
 <details>
 <summary><b>Recursion
 </b></summary>
@@ -294,6 +616,378 @@ This limitation is important to keep in mind if you are working with a program t
 
 </details>
 
+<details>
+<summary><b>Iterator
+</b></summary>
+
+In the simplest terms, an iterator is simply an object that you can iterate ("reiterate") over, or more specifically an object that will return data one element at a time. Iterators are elegantly tucked away behind the scenes and are absolutely everywhere in Python; for loops, list comprehensions, generators and more.
+
+Technically speaking, Python iterator objects must implement two special methods, `__iter__()` and `__next__()`, which collectively make up what is referred to as the iterator protocol.
+
+Most of built-in containers in Python like lists, tuples, strings and more are iterables. The `iter()` function (which in turn calls the `__iter__()` method) returns an iterator from them.
+
+#### Creating an iterator using `next`
+
+```
+# define a list
+my_list = [4, 7, 0, 3]
+
+# get an iterator using iter()
+my_iter = iter(my_list)
+
+## iterate over it using next() 
+
+print(next(my_iter))
+>>> 4
+
+print(next(my_iter))
+>>> 7
+
+## next(obj) is same as obj.__next__()
+
+print(my_iter.__next__())
+>>> 0
+
+print(my_iter.__next__())
+>>> 3
+
+## This will raise error, no items left
+next(my_iter)
+>>> Traceback (most recent call last):
+    File "<stdin>", line 1, in <module>
+    StopIteration
+```
+
+#### Creating an iterator using `for` loops
+
+What's much more likely to see than the above is automatically iterating using a `for loop`. As long as the object is an iterator, we can seamlessly use this loop to iterate over it:
+
+```
+my_list = [4, 7, 0, 3]
+for element in my_list:
+    print(element)
+
+>>> 4
+>>> 7
+>>> 0
+>>> 3
+```
+
+How is the for loop actually implemented? Good question, check out the code below:
+
+```
+for element in iterable:
+    # do something with element
+    
+-----------------------------------------------------
+
+# create an iterator object from that iterable
+iter_obj = iter(iterable)
+
+# infinite loop
+while True:
+    try:
+        # get the next item
+        element = next(iter_obj)
+        # do something with element
+    except StopIteration:
+        # if StopIteration is raised, break from loop
+        break
+```
+
+Internally, the `for` loop creates an iterator object `iter_obj` by calling `iter()` on the iterable.
+
+Ironically, this `for` loop is actually an infinite `while` loop.
+
+Inside the loop, it calls `next()` to get the next element and executes the body of the `for` loop with this value. After hitting the last item in the iterable, `StopIteration` is raised, which is internally caught and thus ends the loop.
+
+#### Infinite iterators
+
+In theory, there can be infinite iterators which would lead to an infinite loop.
+
+The built-in function `iter()` can be called with two arguments, where the first argument must be a callable object (function) and the second is the sentinel. The iterator calls this function until the returned value is equal to the sentinel.
+
+```
+int()
+>>> 0
+
+inf = iter(int,1)
+
+next(inf)
+>>> 0
+
+next(inf)
+>>> 0
+```
+
+We can see that the `int()` function always returns 0. So passing it as iter(int,1) will return an iterator that calls `int()` until the returned value equals 1. This never happens and we get an infinite iterator.
+
+We can also built our own infinite iterators. The following iterator will, theoretically, return all the odd numbers.
+
+A sample run would be as follows.
+
+```
+a = iter(InfIter())
+next(a)
+>>> 1
+
+next(a)
+>>> 3
+
+next(a)
+>>> 5
+
+next(a)
+>>> 7
+
+And so on...
+```
+
+Be careful to include a terminating condition, when iterating over these type of infinite iterators.
+
+**The advantage of using iterators is that they save resources**. In the example above, we could get all of the odd numbers without having to store the entire number system in memory: we can have infinite items (in theory) in finite memory.
+
+* <a href="https://www.programiz.com/python-programming/iterator">source</a>
+</details>
+
+<details>
+<summary><b>Generator
+</b></summary>
+
+A generator is effectively just a function that returns (data) before it is finished, but it pauses at that point, and you can resume the function at that point.
+
+There is a lot of overhead in building an iterator in Python; we have to implement a class with `__iter__()` and `__next__()` method, keep track of internal states, raise `StopIteration` when there was no values to be returned etc.
+
+This is both lengthy and counter intuitive, if only there was a better way...enter generators. Python generators are really just to create iterators and they handle all of the overhead we mentioned above.
+
+#### Creating a generator in Python
+
+It is fairly simple to create a generator in Python, all we need to do is define a normal function with the `yield` statement instead of a `return` statement.
+
+If a function contains at least one `yield` statement (even if it contains other `yield` and/or `return` statements), it becomes a generator function.
+
+Both `yield` and `return` will return some value from a function, with the difference being that the `yield` statement pauses the function, saving its state and later continuing from there for each successive call, unlike terminating a function entirely with a `return` statement.
+
+#### How generators are different from normal functions
+
+The defining factor for a generator functions existence is whether contain or not it contains one or more `yield` statements.
+When called, it returns an object (iterator) but does not start execution immediately.
+Methods like `__iter__()` and `__next__()` are implemented automatically. So we can iterate through the items using `next()`.
+Once the function yields, the function is paused and the control is transferred to the caller.
+Local variables and their states are remembered between successive calls.
+Finally, when the function terminates, StopIteration is raised automatically on further calls.
+Here is an example to illustrate all of the points stated above. We have a generator function named `my_gen()` with several `yield` statements.
+
+
+```
+def my_gen():
+    n = 1
+    print('This is printed first')
+    # Generator function contains yield statements
+    yield n
+
+    n += 1
+    print('This is printed second')
+    yield n
+
+    n += 1
+    print('This is printed at last')
+    yield n
+```
+
+and we can call the generator function in the following manner:
+
+```
+a = my_gen()
+
+next(a)
+>>> This is printed first
+
+next(a)
+>>> This is printed second
+
+next(a)
+>>> This is printed last
+
+next(a)
+>>> StopIteration
+```
+
+As you can see, the state of the variable is remembered between each successive call. Normally, these variables would be destroyed when the function yields. Furthermore, the generator object can be iterated only once.
+
+To restart the process we need to create another generator object by assigning it to a variable, like we did with `a = my_gen()`.
+
+One final tip to remember is that we can use generators with for loops directly, because a for loop takes an iterator and iterates over it using `next()` function:
+
+```
+# A simple generator function
+def my_gen():
+    n = 1
+    print('This is printed first')
+    # Generator function contains yield statements
+    yield n
+
+    n += 1
+    print('This is printed second')
+    yield n
+
+    n += 1
+    print('This is printed at last')
+    yield n
+
+# Using for loop
+for item in my_gen():
+    print(item)
+```
+
+The `for` loop will iterate over the iterator until the last value is reached and then automatically end before a `StopIteration` is raised.
+
+#### Why use generators?
+
+* **Because they deal with data one piece at a time, you can deal with large amounts of data.** With lists, excessive memory requirements could always become a problem.
+
+* Easy to implement.
+
+```
+# iterator function
+class PowTwo:
+    def __init__(self, max = 0):
+        self.max = max
+
+    def __iter__(self):
+        self.n = 0
+        return self
+
+    def __next__(self):
+        if self.n > self.max:
+            raise StopIteration
+
+        result = 2 ** self.n
+        self.n += 1
+        return result
+```
+
+vs.
+
+```
+# generator function
+def PowTwoGen(max = 0):
+    n = 0
+    while n < max:
+        yield 2 ** n
+        n += 1
+```
+
+* Generators allow for a natural way to describe infinite streams.
+
+There are also generator expressions (akin to Python's list comprehensions), but with parenthesis around the expression instead of square brackets.
+
+```
+# initialize the list
+my_list = [1, 3, 6, 10]
+
+# square each term using list comprehension
+[x**2 for x in my_list]
+>>> [1, 9, 36, 100]
+
+# same thing can be done using generator expression
+(x**2 for x in my_list)
+>>> <generator object <genexpr> at 0x0000000002EBDAF8>
+
+# can be printed by wrapping in an iterator (`list` in this case), or iterating over it one by one with `next()`
+list((x**2 for x in my_list))
+>>> [1, 9, 36, 100]
+```
+
+The major difference between a list comprehension and a generator expression is that while the list comprehension produces the entire list, a generator expression produces only one item at a time.
+
+They are kind of lazy in this regard, producing items only when asked for. **For this reason, a generator expression is much more memory efficient than an equivalent list comprehension**.
+
+* <a href="https://www.programiz.com/python-programming/generator">source</a>
+</details>
+
+<details>
+<summary><b>Concurrency
+</b></summary>
+
+Concurrency is **when two or more tasks can start, run and complete in overlapping time periods**. It doesn't necessarily mean they'll even be running at the same time though, for example with multi-tasking on a single-core machine. Concurrency is a property of a program or system.
+
+To quote <a href="https://docs.oracle.com/cd/E19455-01/806-5257/6je9h032b/index.html">Sun's Multithreaded Programming Guide</a>:
+
+> A condition that exists when at least two threads are making progress. A more generalized form of parallelism that can include time-slicing as a form of virtual parallelism.
+
+and also <a href="https://wiki.haskell.org/Parallelism_vs._Concurrency">Haskell's Docs</a>:
+
+> The term Concurrency refers to techniques that make programs more usable. Concurrency can be implemented and is used a lot on single processing units, nonetheless it may benefit from multiple processing units with respect to speed. If an operating system is called a multi-tasking operating system, this is a synonym for supporting concurrency. If you can load multiple documents simultaneously in the tabs of your browser and you can still open menus and perform other actions, this is concurrency.
+
+> If you run distributed-net computations in the background while working with interactive applications in the foreground, that is concurrency. On the other hand, dividing a task into packets that can be computed via distributed-net clients is parallelism.
+
+* <a href="https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism">source</a>
+</details>
+
+<details>
+<summary><b>Parallelism
+</b></summary>
+
+Parallelism is **when tasks _literally_ run at the same time**, like on a multicore processor. Parallelism speaks to the run-time behavior of executing multiple tasks at the same time.
+
+To quote <a href="https://docs.oracle.com/cd/E19455-01/806-5257/6je9h032b/index.html">Sun's Multithreaded Programming Guide</a>:
+
+> A condition that arises when at least two threads are executing simultaneously.
+
+and also <a href="https://wiki.haskell.org/Parallelism_vs._Concurrency">Haskell's Docs</a>:
+
+> The term Parallelism refers to techniques to make programs faster by performing several computations at the same time. This requires hardware with multiple processing units. In many cases the sub-computations are of the same structure, but this is not necessary. Graphic computations on a GPU are parallelism. A key problem of parallelism is to reduce data dependencies in order to be able to perform computations on independent computation units with minimal communication between them. To this end, it can even be an advantage to do the same computation twice on different units.
+
+#### How to tell the difference?
+
+* If you need getNumCapabilities in your program, then your are certainly programming parallelism.
+
+* If your parallelising efforts make sense on a single processor machine, too, then you are certainly programming concurrency.
+
+* <a href="https://stackoverflow.com/questions/1050222/what-is-the-difference-between-concurrency-and-parallelism">source</a>
+</details>
+
+<details>
+<summary><b>Currying
+</b></summary>
+
+Currying is the process of breaking down a function that takes multiple arguments into a series of functions that take part of the arguments. Let's look at an example in JavaScript:
+
+```
+function add (a, b) {
+  return a + b;
+}
+
+add(3, 4); // returns 7
+```
+
+Now let's look at a function that takes two arguments, a and b, and returns their sum (we will not **curry** this function):
+
+```
+function add (a) {
+  return function (b) {
+    return a + b;
+  }
+}
+```
+
+The above is a function that takes in one argument, `a`, and returns a function that take another argument, `b`, and that function finally returns their sum.
+
+```
+add(3)(4);
+
+var add3 = add(3);
+
+add3(4);
+```
+
+The first statement returns 7, like the add(3, 4) statement. The second statement defines a new function called add3 that will add 3 to its argument. This is what some people may call a closure. The third statement uses the add3 operation to add 3 to 4, again producing 7 as a result.
+
+* <a href="https://stackoverflow.com/questions/36314/what-is-currying">source</a>
+</details>
+
+
 ## [1] **Low-level Knowledge**
 
 <details>
@@ -358,9 +1052,9 @@ Hash Tables, or more commonly implemented as dictionaries in Python, are a type 
 True
 
 
-dict = {'Name': 'Cooper', 'Focus': 'Comp Sci Fundamentals'}
+dict = {'age': 'Cooper', 'Focus': 'Comp Sci Fundamentals'}
 
-print(dict['Name'], dict['Focus'])
+print(dict['age'], dict['Focus'])
 
 >>> Cooper, Comp Sci Fundamentals
 ```
@@ -917,7 +1611,7 @@ First off, let's define a few terms:
         * For example, if you purchase an item on Amazon then an entity can be an order, a customer, or the product itself.
 * **Attributes**
     * Each entity is going to have a series of attributes, which are various properties or traits and are represented as the **columns** in your database.
-        * Customer_ID, FirstName, LastName, etc.
+        * Customer_ID, Firstage, Lastage, etc.
 * **Relationships**
     * Dscribes how the entities will interact with eachother (if they can). This is usually done by drawing a line in between them, denoting that there is some sort of interaction or sonnection in some way.
 * **Cardinality**
@@ -1079,7 +1773,7 @@ PostgreSQL, more commonly referred to as Postgres, is a powerful and open source
 ### Notes
 
 ---
-In the past, traditional DBMS's only support a data model consisting of a collection of named relations which contain a small option of specific types (float, int, char string, money, date), but as you can see this model can quickly become inadequate for future data processing applications <a href="https://www.postgresql.org/docs/6.3/c0101.htm">source</a>. This is where the relational aspect of DMBS's comes into play due to their "Spartan simplicity", however the simplicity is still a double-edged sword as it makes implementation of certain application very difficult. As we touched on in the Bite Size Overview, this is where Postgres really shines; by leveraging those 4 basic concepts in addition to things like **constraints, triggers, rules, transactional integrity** and more it allows users to easily extend their system and deal with more complex processes.
+In the past, traditional DBMS's only support a data model consisting of a collection of aged relations which contain a small option of specific types (float, int, char string, money, date), but as you can see this model can quickly become inadequate for future data processing applications <a href="https://www.postgresql.org/docs/6.3/c0101.htm">source</a>. This is where the relational aspect of DMBS's comes into play due to their "Spartan simplicity", however the simplicity is still a double-edged sword as it makes implementation of certain application very difficult. As we touched on in the Bite Size Overview, this is where Postgres really shines; by leveraging those 4 basic concepts in addition to things like **constraints, triggers, rules, transactional integrity** and more it allows users to easily extend their system and deal with more complex processes.
 
 ### Summary
 
@@ -1122,7 +1816,7 @@ Clients (web browers) communicate by sending HTTP requests to the server and the
         * _This could be fetching a resource to check when it was last updated. Then we could use the expensive `GET` request to download the resource when it has changed._
 * `PUT`
     * Update an existing resource (or create one if it doesn't exist).
-        * _This could be whenever you click "update" to change your username on a website._
+        * _This could be whenever you click "update" to change your userage on a website._
 * `DELETE`
     * Delete the specified resource.
         * _This could be whenever you click "remove item" from your shopping cart._
@@ -1195,7 +1889,7 @@ Content-Length: 41823
 <head prefix="og: http://ogp.me/ns#">
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-  <script>(function(d) { d.className = d.className.replace(/\bno-js/, ''); })(document.documentElement);</script>
+  <script>(function(d) { d.classage = d.classage.replace(/\bno-js/, ''); })(document.documentElement);</script>
   ...
 ```
 
@@ -1231,10 +1925,10 @@ Accept-Encoding: gzip, deflate, br
 Accept-Language: en-US,en;q=0.8,es;q=0.6
 Cookie: sessionid=6ynxs23n521lu21b1t136rhbv7ezngie; _gat=1; csrftoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT; dwf_section_edit=False; dwf_sg_task_completion=False; _ga=GA1.2.1688886003.1471911953; ffo=true
 
-csrfmiddlewaretoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT&user-username=hamishwillee&user-fullname=Hamish+Willee&user-title=&user-organization=&user-location=Australia&user-locale=en-US&user-timezone=Australia%2FMelbourne&user-irc_nickname=&user-interests=&user-expertise=&user-twitter_url=&user-stackoverflow_url=&user-linkedin_url=&user-mozillians_url=&user-facebook_url=
+csrfmiddlewaretoken=zIPUJsAZv6pcgCBJSCj1zU6pQZbfMUAT&user-userage=hamishwillee&user-fullage=Hamish+Willee&user-title=&user-organization=&user-location=Australia&user-locale=en-US&user-timezone=Australia%2FMelbourne&user-irc_nickage=&user-interests=&user-expertise=&user-twitter_url=&user-stackoverflow_url=&user-linkedin_url=&user-mozillians_url=&user-facebook_url=
 ```
 
-The biggest difference you may have noticed is that the URL doesn't contain any paramaters. At the bottom of the request you can see that that the information from the form is encoded as a body in the request (`&user-fullname=Hamish+Willee`)
+The biggest difference you may have noticed is that the URL doesn't contain any paramaters. At the bottom of the request you can see that that the information from the form is encoded as a body in the request (`&user-fullage=Hamish+Willee`)
  (<a href="https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Client-Server_overview">source for above</a>).
 
 </details>
@@ -1271,7 +1965,7 @@ This was just a brief overview of how a web client and a server communicate, but
 ### Summary
 
 ---
-Web clients and servers communicate through a series of HTTP requests, most commonly `GET`, `HEAD`, `POST`, `UPDATE` and `DELETE`. The server performs an action based on what the client is requesting of it, be it creating a new account, deleting a user, changing your username or something else entirely.
+Web clients and servers communicate through a series of HTTP requests, most commonly `GET`, `HEAD`, `POST`, `UPDATE` and `DELETE`. The server performs an action based on what the client is requesting of it, be it creating a new account, deleting a user, changing your userage or something else entirely.
 
 Chrome Dev Tools or Fiddler are both good options for exploring how websites interact in more detail.
 
@@ -1362,7 +2056,7 @@ Depending on the size of your application, you may end up outright removing or s
 <details>
 <summary>Django Example</summary>
 
-For example, consider the following Django code that maps two URL patterns to two view functions. The first pattern ensures that an HTTP request with a resource URL of /best will be passed to a function named index() in the views module. A request that has the pattern "/best/junior", will instead be passed to the junior() view function.
+For example, consider the following Django code that maps two URL patterns to two view functions. The first pattern ensures that an HTTP request with a resource URL of /best will be passed to a function aged index() in the views module. A request that has the pattern "/best/junior", will instead be passed to the junior() view function.
 
 ```
 # file: best/urls.py
@@ -1379,9 +2073,9 @@ urlpatterns = [
 ]
 ```
 
-The web framework also makes it easy for a view function to fetch information from the database. The structure of our data is defined in models, which are Python classes that define the fields to be stored in the underlying database. If we have a model named Team with a field of "team_type" then we can use a simple query syntax to get back all teams that have a particular type.
+The web framework also makes it easy for a view function to fetch information from the database. The structure of our data is defined in models, which are Python classes that define the fields to be stored in the underlying database. If we have a model aged Team with a field of "team_type" then we can use a simple query syntax to get back all teams that have a particular type.
 
-The example below gets a list of all teams that have the exact (case sensitive) team_type of "junior" — note the format: field name (team_type) followed by double underscore, and then the type of match to use (in this case exact). There are many other types of matches and we can daisy chain them. We can also control the order and the number of results returned.
+The example below gets a list of all teams that have the exact (case sensitive) team_type of "junior" — note the format: field age (team_type) followed by double underscore, and then the type of match to use (in this case exact). There are many other types of matches and we can daisy chain them. We can also control the order and the number of results returned.
 
 ```
 # file: best/views.py
@@ -1441,6 +2135,8 @@ Web frameworks assist developers by abstracting away low-level processes and pro
 
 ## [9] **Math**
 
+Long-term TODO: Learn about set theory, finite-state machines, regular expressions, matrix multiplication, bitwise operations, pigeonhole principle and more.
+
 <details>
 <summary><b>Modulo
 </b></summary>
@@ -1460,7 +2156,6 @@ This is commonly used in combination with a comparison operator:
     * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
 * Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
 </details>
-* Long-term TODO: Learn about set theory, finite-state machines, regular expressions, matrix multiplication, bitwise operations, solving linear equations, important combinatorics concepts such as permutations, combinations, pigeonhole principle.
 
 ## **References** (raw, will sort and format later)
 
@@ -1491,5 +2186,14 @@ This is commonly used in combination with a comparison operator:
 * https://realpython.com/python-thinking-recursively/
 * https://realpython.com/python-memcache-efficient-caching/
 * https://mike.place/2016/memoization/
+* https://teachyourselfcs.com/
+* https://www.reddit.com/r/learnprogramming/comments/xwd16/had_a_technical_phone_interview_today_for_an/
+* https://hackernoon.com/learning-ai-if-you-suck-at-math-8bdfb4b79037
+* https://github.com/tuvtran/project-based-learning
+* https://news.ycombinator.com/item?id=13660086
+* https://github.com/vinta/awesome-python#readme
+* https://dbader.org/blog/python-enumerate
+* https://www.youtube.com/watch?v=P8ltWIqDPzo
+* https://www.digitalocean.com/community/tutorials/digitalocean-ebook-how-to-code-in-python
 
 _If you somehow ended up here, thanks for checking it out and I hope you find it helpful <3._
