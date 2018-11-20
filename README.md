@@ -31,6 +31,7 @@ Don't feel overwhelmed at the feeling that you have an exorbitant about of infor
 * Databases
 * Web Apps & Servers
 * Math
+* Built-in Functions
 
 ## Language Breakdown
 
@@ -234,6 +235,8 @@ Dan Abramov (co-founder of Redux) has even <a href="https://medium.com/@dan_abra
 
 * ES (ECMAScript) is actually the blueprint convention that JavaScript is based on, and it was created to standardize JavaScript <a href="https://www.youtube.com/watch?v=9A_jkh2AKR8">source</a>.
 
+* In JavaScript you can increment by using `variable++` and decrement with `variable--`. This will return the current value and then increment it afterwords. If we want to the variable before returning it, we simply have to denote the increments and decrements in the reverse fashion: `++variable` and `--variable`, respectively.
+
 * The primary package manager is `npm` (akin to `pip`).
 
 * Babel converts your JavaScript into EMCAScript 2015 syntax and beyond.
@@ -302,6 +305,262 @@ Dan Abramov (co-founder of Redux) has even <a href="https://medium.com/@dan_abra
     In our case, we are using constants to store references to parts of our user interface; the text inside some of them might change, but the HTML elements referenced stay the same.
 
     </details>
+
+    <details>
+    <summary><b>Switch statements
+    </b></summary>
+
+    While `if...else` statements can be useful for the majority of cases, there are some instances where you just want to set a variable to a value or print out said value, and for this the `if...else` process can be overly cumbersome.
+
+    Enter `switch` statements, which take a single expression/value as an input and then look through a number of choices until they find one that matches the value, executing the corresponding code that goes along with it.
+    ```
+    switch (expression) {
+        case choice1:
+            run this code
+            break;
+
+        case choice2:
+            run this code instead
+            break;
+            
+        // include as many cases as you like
+
+        default:
+            actually, just run this code
+    }
+    ```
+
+    </details>
+
+    <details>
+    <summary><b>Function scopes and conflicts
+    </b></summary>
+    Whenever you create a functions and declare variables within it, those variables and other things defined within the function are inside their own seperate **scope**. What does that mean? They are locked away in their own seperate compartments, unreachable from inside other functions or from code outside of the function.
+
+    The top level outside of your functions is referred to as the **global scope**, which means that values are accessible from anywhere in the code.
+
+    Think of how a Zoo is setup. Each animal has their own cut-off section, or a function scope, and the Zoo Keeper has they keys to every section, or a global scope.
+
+    </details>
+
+    <details>
+    <summary><b>Common DOM API Functions
+    </b></summary>
+
+    * `document.querySelector()`
+        * The Document method `querySelector()` returns the first Element within the document that matches the specified selector, or group of selectors. If no matches are found, null is returned.
+            * _Depth-first preorder traversal starting with the first node and descending down through the children._
+        * Examples:
+            * Finding the first element in the document with the class `.myclass`.
+            ```
+            let el = document.querySelector(".myclass");
+            ```
+            * Selectors can also be really powerful, as demonstrated in the following example. Here, the first `<input>` element with the name "login" (`<input name="login"/>`) located inside a `<div>` whose class is "user-panel main" (`<div class="user-panel main">`) in the document is returned:
+            ```
+            let el = document.querySelector("div.user-panel.main input[name='login']");
+            ```
+    * `document.querySelectorAll()`
+        * The Element method `querySelectorAll()` returns a static (not live) NodeList representing a list of the document's elements that match the specified group of selectors.
+        * Examples:
+            * To obtain a NodeList of all of the `<p>` elements in the document:
+            ```
+            let matches = document.querySelectorAll("p");
+            ```
+            * This example returns a list of all `<div>` elements within the document with a class of either `"note"` or `"alert"`:
+            ```
+            let matches = document.querySelectorAll("div.note, div.alert");
+            ```
+            * Here, we get a list of `<p>` elements whose immediate parent element is a div with the class `"highlighted"` and which are located inside a container whose ID is `"test"`.
+            ```
+            let container = document.querySelector("#test");
+            let matches = container.querySelectorAll("div.highlighted > p");
+            ```
+    * `<value>.setAttribute()`
+        * We can use `<value>.setAttribute()` when we need to update the attributes of an element in the document.
+        * Examples:
+            * Updates the `name` attribute and changes the value to 'helloButton', and afterwords sets the `"disabled"` attribute to `True`, which results in our button being disabled.
+            ```
+            <button>Hello World</button>
+
+            let b = document.querySelector("button"); 
+
+            b.setAttribute("name", "helloButton");
+            b.setAttribute("disabled", "");
+            ```
+    * `<node>.onclick()`
+        * The `<node>.onclick` event is raised when the user clicks on an element. The click event will occur after the `mousedown` and `mouseup` events.
+            * This sets up a `click` event listener for our element which will print out a result when clicked.
+            ```
+            closeBtn.onclick = function() {
+                console.log('success!');
+            }
+            ```
+            * This declares a `btn` variable that selects our button and stores it in a reference, and then calls a function afterwards.
+            ```
+            var btn = document.querySelector('button');
+
+            btn.onclick = function i();
+            ```
+    * `document.createElement()`
+        * In an HTML document, the `document.createElement()` method creates the HTML element specified by tagName, or an HTMLUnknownElement if tagName isn't recognized.
+        * Examples:
+            * This creates a new `<div>` and inserts it into the HTML body.
+            ```
+            let newDiv = document.createElement("div");
+            ```
+    * `document.createTextNode()`
+        * `document.createTextNode()` is used to insert a string into a specific, pre-defined node.
+        * Examples:
+            * This inserts a string into the node as text content.
+            ```
+            let newContent = document.createTextNode("Hi there and greetings!");
+            ```
+    * `<node>.textContent()`
+        * If we wish to populate the text contents of a node, we can utilize the `<node>.textContent()` module.
+            * Inserts the newly created element into the DOM before our first value (`<div>`).
+            ```
+            let msg = document.createElement('p');
+
+            msg.textContent = 'This is a message box';
+            newDiv.appendChild(msg);
+            ```
+    * `<node>.appendChild()`
+        * `<node>.appendChild()` is used when we need to add (append) our node to a previously created element (`<div>` in this case).
+        * Examples:
+            * This adds the text node to our previously created `<div>`.
+            ```
+            newDiv.appendChild(newContent);
+            ```
+    * `document.getElementById()`
+        * In an HTML document, `document.getElementById()` is used when we need to select an element by its `id` value.
+        * Examples:
+            * Selects the element `<div1>` from the document.
+            ```
+            let currentDiv = document.getElementById("div1");
+            ```
+    * `document.body.insertBefore()`
+        * Finally, we can use `document.body.insertBefore()` to insert the newly created element and its conents into the DOM.
+        * Examples:
+            * Inserts the newly created element into the DOM before our first value (`<div>`).
+            ```
+            document.body.insertBefore(newDiv, currentDiv);
+            ```
+
+    <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector">source</a>
+    </details>
+
+    <details>
+    <summary><b>Interview Questions
+    </b></summary>
+
+    * **What is the difference between var and let?**
+        * `var` has been around in JavaScript for a very long time, and `let` is pretty much its successor that has only been released in the past few years. `let` has block scope, and `var` has function scope.
+    * **What is the difference between let and const?**
+        * `const` is used whenever you need to assign something to a variable that you do not want to change. This doesn't mean it's immutable, as you can still `push` and `pop` arrays for instance, but it does mean that you can't assign a variable name that has already been previously defined.
+    * **What is the difference between == and ===?**
+        * When you use `==` you are only comparing the value and not it's underlying type, whereas with `===` you are doing a deeper check that also compares the variables types.
+        ```
+        5 == '5'  # True
+        5 === '5'  # False
+        ```
+    * **What is the use of an arrow function?**
+        * 
+    * **What is prototypal inheritance?**
+        * Every object has a property `prototype` where you can add methods and properties to it, and when you create new objects from these objects, the newly created objects will automatically inherit the property of the parent.
+        * When you call an object it first looks at it's own properties to see if it is there, if it finds it it will execute. If it doesn't find it looks towards its parents' properties.
+        ```
+        let car = function(model) {
+            this.model = model;
+        };
+
+        car.prototype.getModel = function() {
+            return this.model;
+        }
+
+        let toyota = new car('toyota');
+        console.log(toyota.getModel());
+        ```
+    * **What is the difference between function declaration & function expression?**
+        * A function declaration is equivalent to when you normally create a named function that is not assigned to any variable.
+        * A function expression is when you assign a function to a variable; akin to a lambda expression (anonymous function). This also changes the function to a variable scope. This is especially useful when we need to pass a function into another function by utilizing a variable argument.
+        ```
+        # funcD();
+        function funcD() {
+            console.log('function declaration');
+        };
+
+        # funcE();
+        let funcE = function() {
+            console.log('function expression')
+        };
+        ```
+     * **What are promises and why do we use them?**
+        * Let's say we wanted to make an `ajax` call that has to wait until something happens before executing. Once that thing happens and comes back, we execute our callback function (which can include another `ajax` call, and so on and so forth). This is referred to as **callback hell**.
+        ```
+        $.ajax({
+            url: "a.json",
+            success: function(r {
+                $.ajax({
+                    url: "b.json?" + r.a,
+                    success: function(result) {
+                        $("#div1").html(result);
+                    }
+                });
+            })
+        });
+
+        let p1 = new Promise(function(resolve, reject) {
+            resolve($.ajax('a.json');)
+        });
+
+        p1.then(function(r) {
+            return new Promise()
+        }).then(function(result) {
+            $("#div1").html(result);
+        })
+        ```
+    * **Using setTimeout()?**
+        * `setTimeout` turns the method call into an `asyc` action, therefore making it wait for every normal call in the stack before it can execute.
+        ```
+        setTimeout(function() {
+            console.log('a');
+        })
+
+        console.log('b')
+        console.log('c')
+
+        >>> 'b'
+        >>> 'c'
+        >>> 'a'
+        ```
+    * **What is a closure and how do you use it?**
+        * When a function returns another function, the returning function would hold all of it's environment in a class.
+        ```
+        let obj = function() {
+            let i = 0  # private variable
+
+            return {
+                setI(k) {
+                    i = k;
+                },
+                getI() {
+                    return i;
+                }
+            }
+        };
+
+        let x = obj();
+
+        x.setI(2);
+        x.setI(3);
+        console.log(x.getI());
+
+        >>> 3
+        ```
+        * If we were to look into the objects scope, we would see the closure property with the assigned value of 3.
+    </details>
+</details>
+
 <!-- 
 
 #### Understanding bind, apply and call
@@ -2145,6 +2404,8 @@ Modulo returns the remainder (modulus), not the quotient, between two values.
 ```
 4 % 2; <- returns 0
 4 % 3; <- returns 1
+2500 % 2250 <- returns 250
+1000 % 900 <- returns 100
 
 This is commonly used in combination with a comparison operator:
 
@@ -2155,6 +2416,338 @@ This is commonly used in combination with a comparison operator:
 * One common place to use Modulo (or the % operator) is when checking whether a number is divisible by another number.
     * For example, is 3 even or odd? If it is even it will produce a remainder of 0 when divided by 2, if it is odd it can't be evenly divided by 2.
 * Great little short explanation (<a href="https://www.omnicalculator.com/math/modulo#what-are-modulo-operations">here</a>).
+</details>
+
+## [10] **Built-in Functions**
+
+<details>
+<summary><b>Strings
+</b></summary>
+
+* Python
+    ```
+    n = 5
+    s = string(s)
+    ```
+* JavaScript
+    ```
+    n = 5;
+    s = n.toString();
+    ```
+</details>
+
+<details>
+<summary><b>Numbers
+</b></summary>
+
+* Python
+    ```
+    s = '5'
+    n = int(s)
+
+    f = float(s)
+    ```
+* JavaScript
+    ```
+    s = '5';
+    n = Number(5);
+    ```
+</details>
+
+<details>
+<summary><b>Arrays
+</b></summary>
+
+* Python
+    ```
+    a = [1,'test', ['nested']]
+    p = a.pop()  # removes and returns the last value in the list
+    u = a.append('pushedTest)  # appends the item to the tail of the array
+    ```
+* JavaScript
+    ```
+    a = [1,'test', ['nested']];
+    p = a.pop();  # removes and returns the last value in the list
+    u = a.push('pushedTest');  # appends the item to the tail of the array
+
+    s = s.shift();  # removes and returns the first value in the list
+    n = s.unshift();  # appends the item to the head of the array
+    ```
+</details>
+
+<details>
+<summary><b>Functions
+</b></summary>
+
+* Python
+    ```
+    def i():
+        ...
+
+    ---------------
+
+    def i():
+        newNumber = 1
+        t(newNumber)
+    
+    def t(newNumber):
+        print(newNumber)
+    
+    i()
+    >>> 1
+    ```
+* JavaScript
+    ```
+    function i() {
+        ...;
+    };
+
+    ---------------
+
+    function i() {
+        var newNumber = 1;
+        t(newNumber);
+    };
+
+    function t(newNumber) {
+        console.log(newNumber);
+    };
+
+    i();
+    >>> 1
+    ```
+</details>
+
+<details>
+<summary><b>Length
+</b></summary>
+
+* Python
+    ```
+    s = 'test'
+    l = len(s)
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    l = s.length;
+    ```
+</details>
+
+<details>
+<summary><b>Slicing
+</b></summary>
+
+* Python
+    ```
+    s = 'test'
+    f = s[0]  # first element
+
+    l = s[-1]  # last element
+    i = s[-2]  # second to last element
+    e = s[1:]  # everything after the first element
+    t = s[:-1]  # everything before the last element
+    r = s[1:-1]  # everything between the first and last element
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    f = s[0];  # first element
+
+    l = s[s.length - 1];  # last element
+    i = s[s.length - 2];  # second to last element
+    e = s.slice(1,);  # everything after the first element
+    t = s.slice(0,3); # everything before the last element
+    r = s.slice(1,3);  # everything between the first and last element
+    ```
+</details>
+
+<details>
+<summary><b>Splitting
+</b></summary>
+
+* Python
+    ```
+    s = 'test,test2,test3'
+    i = s.split(',')
+    f = s.split(',')[0]
+
+    # joining
+    j = ' '.join(i)
+    ```
+* JavaScript
+    ```
+    s = 'test,test2,test3'
+    i = s.split(',')
+    f = s.split(',')[0]
+
+    # joining
+    j = i.join(' ')
+    ```
+</details>
+
+<details>
+<summary><b>Changing cases
+</b></summary>
+
+* Python
+    ```
+    s = 'test'
+    u = s.upper()  # changes the casing to all upper-case
+    l = s.lower()  # changes the casing to all upper-case
+    t = s.title()  # changes the case on the first letter to upper-case
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    u = s.toUpperCase();  # changes the casing to all upper-case
+    l = s.toLowerCase();  # changes the casing to all upper-case
+    ```
+</details>
+
+<details>
+<summary><b>Replacing
+</b></summary>
+
+* Python
+    ```
+    s = 'test';
+    m = s.replace('e', 'f')  # replaces all instances of 'e' with 'f'
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    m = s.replace('e', 'f');  # replaces all instances of 'e' with 'f'
+    ```
+</details>
+
+</details>
+
+<details>
+<summary><b>Inclusion
+</b></summary>
+
+* Python
+    ```
+    s = 'test'
+    if 'e' in s:  # true
+        ...
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    u = s.includes('e');  # true
+    ```
+</details>
+
+<details>
+<summary><b>Substrings
+</b></summary>
+
+* Python
+    ```
+    ```
+* JavaScript
+    ```
+    s = 'test';
+    i = s.indexOf('s')  # 2
+    i = s.indexOf('x')  # -1
+    ```
+</details>
+
+<details>
+<summary><b>Loops, Conditionals, Logical and Ternary Operators
+</b></summary>
+
+* Python
+    ```
+    if condition:
+        ...
+    elif:
+        ...
+    else:
+        ...
+
+    ------------------
+
+    if condition:
+        ...
+    ...
+
+    ------------------
+
+    # and, or, is, is not, in, etc.
+    if condition _operator_ condition:
+        ...
+
+    ------------------
+
+    for i in enumerate(list):  # or range(...)
+        ...
+
+    ------------------
+
+    i = 0
+
+    while conditional:
+        if conditional:
+            ...
+        else:
+            ...
+
+        i += 1
+    ```
+* JavaScript
+    ```
+    if (condition) {
+        ...
+    }
+    ...
+
+    ------------------
+
+    if (condition) {
+        ...
+    } else if {
+        ...
+    } else {
+        ...
+    }
+
+    ------------------
+
+    # && (and), || (or), etc.
+    # if (!(...)) is used as a way to negate an expression
+    if (condition _operator_ condition) {
+        ...
+    }
+
+    ------------------
+
+    # if condition is true then return the first value, otherwise if it is false then return the second
+    ( condition ) ? ... : ...
+
+    -------------------
+
+    # i=0; i <= 100; i++
+    for (initializer; exit-condition; final-expression) {
+        ...
+    }
+
+    ------------------
+
+    let i = 0;
+
+    while (conditional) {
+        if (conditional) {
+            ...
+        } else {
+            ...
+        }
+
+        i++;
+    }
+    ```
 </details>
 
 ## **References** (raw, will sort and format later)
@@ -2190,7 +2783,10 @@ This is commonly used in combination with a comparison operator:
 * https://www.reddit.com/r/learnprogramming/comments/xwd16/had_a_technical_phone_interview_today_for_an/
 * https://hackernoon.com/learning-ai-if-you-suck-at-math-8bdfb4b79037
 * https://github.com/tuvtran/project-based-learning
+* https://www.youtube.com/channel/UCwptawgtdrxkG2kWY0OO5mQ/playlists
+* https://www.youtube.com/playlist?list=PL-osiE80TeTt2d9bfVyTiXJA-UTHn6WwU
 * https://news.ycombinator.com/item?id=13660086
+* https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Building_blocks/Functions
 * https://github.com/vinta/awesome-python#readme
 * https://dbader.org/blog/python-enumerate
 * https://www.youtube.com/watch?v=P8ltWIqDPzo
