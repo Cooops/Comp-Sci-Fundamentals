@@ -274,6 +274,7 @@ Dan Abramov (co-founder of Redux) has even <a href="https://medium.com/@dan_abra
     To summarize, **if your scripts can run independently without dependencies, use `async`**. Otherwise, **if the order of the scripts matters, we can utilize `defer`.**
 
     </details>
+
     <details>
     <summary><b>Let and Const
     </b></summary>
@@ -447,6 +448,466 @@ Dan Abramov (co-founder of Redux) has even <a href="https://medium.com/@dan_abra
             ```
 
     <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/querySelector">source</a>
+    </details>
+
+    <details>
+    <summary><b>Promises
+    </b></summary>
+
+    ### What is a promise?
+
+    A `promise` is an object representing the eventual completion or failure of an asynchronous operation. You can both consume and create promises.
+
+    Essentially, **a `promise` is a returned object to which you attach callbacks, instead of passing callbacks into a function**.
+    
+    ### Examples
+    
+    <details>
+    <summary><b>Basic Example
+    </b></summary>
+
+    Let's look at the most basic example of a promise before diving any further. A `promise` has a callback function that has two arguments, `resolve` and `reject`. As you would expect, `resolve` is executed when the `promise` has been fulfilled and completely successfully. On the other hand, `reject` is used for when the promise has failed to complete successfully (whether due to time constraints, logic, or something else).
+
+    ```
+    // assign our new promise to the variable `promiseToCleanTheRoom`
+    let promiseToCleanTheRoom = new Promise(function(resolve, reject) {
+
+        // cleaning the room function
+
+        // set our indicator to `true` after we have cleaned the room,
+        // or `false` to trigger out `reject` callback.
+        let isClean = false;
+
+        // if the indicator exists, then execute our `resolve` callback function, otherwise return our `reject` function.
+        if (isClean){
+            resolve('clean');  // return the status back from the `resolve` function
+        } else {
+            reject('not clean');
+        }
+    });
+
+    // only executed once the `promise` has resolved
+    promiseToCleanTheRoom.then(function(fromResolve){
+        console.log('the room is ' + fromResolve);
+
+    // only executed once the `promise` was rejecteed
+    }).catch(function(fromReject){
+        console.log('the room is ' + fromReject)
+    });
+    ```
+    </details>
+
+    <details>
+    <summary><b>Intermediate Example
+    </b></summary>
+
+    Let's look at a more complex example. Say for instance we had three promises, `cleanRoom`, `removeGarbage` and `winIceCream` that were supposed to be executed sequentially (chained).
+
+    We could implement this in the following manner:
+
+    ```
+    let cleanRoom = function() {
+        return new Promise(function(resolve, reject) {
+            resolve('cleaned the room');
+        });
+    };
+
+     let removeGarbage = function(p) {
+        return new Promise(function(resolve, reject) {
+            resolve('removed garbage');
+        });
+    };
+
+     let winIceCream = function(p) {
+        return new Promise(function(resolve, reject) {
+            resolve('won ice-cream');
+        });
+    };
+
+    // now we are essentially creating a `promise` chain. once `cleanRoom` resolves, we will execute a callback and return another `promise`, `removeGarbase`. Which will chain into another returned callback `promise` `winIceCream`, which will finally callback one more promise and log that we are completed with the chain.
+
+    cleanRoom().then(function() {
+        return removeGarbage();
+    }).then(function(){
+        return winIceCream();
+    }).then(function() {
+        console.log('well done, everything is done!')
+    });
+
+    >>> well done, everything is done!
+    ```
+
+    If we wanted to instead pass through a `message` argument and print out the results at the end, we could make the following adjusments:
+
+    ```
+    let cleanRoom = function() {
+        return new Promise(function(resolve, reject) {
+            resolve('cleaned the room');
+        });
+    };
+
+     let removeGarbage = function(message) {
+        return new Promise(function(resolve, reject) {
+            resolve(message + ', removed garbage');
+        });
+    };
+
+     let winIceCream = function(message) {
+        return new Promise(function(resolve, reject) {
+            resolve(message + ', won ice-cream');
+        });
+    };
+
+    // now we are essentially creating a `promise` chain. once `cleanRoom` resolves, we will execute a callback and return another `promise`, `removeGarbase`. Which will chain into another returned callback `promise` `winIceCream`, which will finally callback one more promise and log that we are completed with the chain.
+
+    cleanRoom().then(function(result) {
+        return removeGarbage(result);
+    }).then(function(result){
+        return winIceCream(result);
+    }).then(function(result) {
+        console.log('well done, everything is done!' + result)
+    });
+
+    >>> well done, everything is done! cleaned the room, removed garbage, won ice-cream
+    ```
+
+    This is useful if we need to pass values through our `promise` chain and maintain state.
+    
+    Right now, all of the above examples are executing our promises sequentially, one after another, and not in parallel. What if we instead wanted to have our promises spawn at the same time and once all of them are completeted to execute a final function (be careful about race conditions)?
+
+    We can utilize the `.all()` keyword to be able to pass in an array of promises and then attach a single `.then()` callback function to execute once each promise has been resolved:
+    
+    ```
+    Promise.all([cleanRoom(), removeGarbage(), winIceCream()]).then(function() {
+        console.log('all three promises have been finished')
+    });
+    ```
+
+    What about if we just wanted to execute a callback function once _any_ of the promises have finished executing? We can utilize the `.race()` keyword instead of `.all()` to denote this change:
+
+    ```
+    Promise.race([cleanRoom(), removeGarbage(), winIceCream()]).then(function() {
+        console.log('one promise is finished.')
+    });
+    ```
+    </details>
+
+    <details>
+    <summary><b>Intermediate Example #2
+    </b></summary>
+
+    Let's say we were to create a function, `createAudioFileAsync()`, which asynchronously generates a sound file given a configuration record and two callback functions, one called if the audio file is successfully created, and the other called if an error occurs.
+
+    Now, Let's look at some of the code that uses `createAudioFileAsync()`
+
+    ```
+    function successCallback(result) {
+        console.log("Audio file ready at URL: " + result);
+    }
+
+    function failureCallback(error) {
+        console.log("Error generating audio file: " + error);
+    }
+
+    createAudioFileAsync(audioSettings, successCallback, failureCallback);
+    ```
+
+    This is quite verbose and we can simply it to a single line, as modern functions return a `promise` that we can attach directly to our callback instead.
+
+    If `createAudioFileAsync()` was created to return a `promise` instead, we could use the following block of code:
+
+    ```
+    createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
+
+    # the above is short for the below code
+    const promise = createAudioFileAsync(audioSettings);
+    promise.then(successCallback, failureCallback);
+    ```
+
+    This is what is referred to as an **asynchronous function call**, and it is extremely common and has several advantages that are touched on below.
+
+    </details>
+
+    ### What do promises guarantee?
+
+    Unlike old-style passed-in callbacks, a `promise` comes with some guarantees:
+
+    * Callbacks will never be called before the completion of the current run of the JavaScript event loop.
+    * Callbacks added with `then()` even after the success or failure of the asynchronous operation, will be called, as above.
+    * Multiple callbacks may be added by calling `then()` several times. Each callback is executed one after another, in the order in which they were inserted.
+
+    **One of the great things about using promises is chaining.**
+
+    ### Chaining
+
+    A common need is to execute two or more asynchronous operations back to back, where each subsequent operation starts when the previous operation succeeds, with the result from the previous step. We accomplish this by creating a `promise` chain.
+
+    The magic? **The `then()` function returns a new `promise`, different from the original**:
+
+    ```
+    const promise = doSomething();
+    const promise2 = promise.then(successCallback, failureCallback);
+
+    or
+
+    const promise2 = doSomething().then(successCallback, failureCallback);
+    ```
+    This second `promise` (`promise2`) represents the completion not just of `doSomething()`, but also of `successCallback` and `failureCallback`, which can be other asynchronous functions returning a `promise`. When that's the case, any callbacks added to `promise2` get queued behind the `promise` returned by either `successCallback` or `failureCallback`.
+
+    **Basically, each promise represents the completion of another asynchronous step in the chain**.
+
+    In the old days, doing several asynchronous operations in a row would lead to the classic callback pyramid of doom:
+
+        ```
+        doSomething(function(result) {
+            doSomethingElse(result, function(newResult) {
+                doThirdThing(newResult, function(finalResult) {
+                    console.log('Got the final result: ' + finalResult);
+                }, failureCallback);
+            }, failureCallback);
+        }, failureCallback);
+        ```
+
+    With modern functions, we attach our callbacks to the returned promises instead, forming a promise chain:
+
+        ```
+        doSomething().then(function(result) {
+            return doSomethingElse(result);
+        })
+        .then(function(newResult) {
+            return doThirdThing(newResult);
+        })
+        .then(function(finalResult) {
+            console.log('Got the final result: ' + finalResult);
+        })
+        .catch(failureCallback);
+        ```
+    The arguments to `then` are optional, and `catch(failureCallback)` is short for `then(null, failureCallback)`. You might see this expressed with arrow functions instead:
+
+        ```
+        doSomething()
+        .then(result => doSomethingElse(result))
+        .then(newResult => doThirdThing(newResult))
+        .then(finalResult => {
+            console.log(`Got the final result: ${finalResult}`);
+        })
+        .catch(failureCallback);
+        ```
+
+    **Important**: Always return results, otherwise callbacks won't catch the result of a previous promise (with arrow functions `() => x` is short for `() => { return x; }`).
+
+    ### Chaining after a `catch`
+
+    It's possible to chain after a failure, i.e. a `catch`, which is useful to accomplish new actions even after an action failed in the chain. Read the following example:
+
+    ```
+    new Promise((resolve, reject) => {
+        console.log('Initial');
+
+        resolve();
+    })
+    .then(() => {
+        throw new Error('Something failed');
+        console.log('Do this');
+    })
+    .catch(() => {
+        console.log('Do that');
+    })
+    .then(() => {
+        console.log('Do this, no matter what happened before');
+    });
+
+    >>> Initial
+    >>> Do that
+    >>> Do this, no matter what happened before
+    ```
+
+    As we can see, the text `Do this` is not displayed because the `Something failed` error caused a rejection.
+
+    ### Error propogation
+
+    A `promise` chain will stop if it hits an exception, looking down the chain for `catch` handlers instead. This is similar to how synchronous code works:
+
+    ```
+    try {
+        const result = syncDoSomething();
+        const newResult = syncDoSomethingElse(result);
+        const finalResult = syncDoThirdThing(newResult);
+        console.log(`Got the final result: ${finalResult}`);
+    } catch(error) {
+        failureCallback(error);
+    }
+    ```
+
+    This symmetry with asynchronous code culminates in the async/await syntactic sugar in ECMAScript 2017:
+
+    ```
+    async function foo() {
+        try {
+            const result = await doSomething();
+            const newResult = await doSomethingElse(result);
+            const finalResult = await doThirdThing(newResult);
+            console.log(`Got the final result: ${finalResult}`);
+        } catch(error) {
+            failureCallback(error);
+        }
+    }
+    ```
+
+    It builds on promises, e.g. `doSomething()` is the same function as before.
+
+    **Promises solve a fundamental flaw with the callback pyramid of doom, by catching all errors, even thrown exceptions and programming errors**. This is essential for functional composition of asynchronous operations.
+    
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises">source</a>
+    <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise">source</a>
+    </details>
+
+    <details>
+    <summary><b>Clojures
+    </b></summary>
+
+    ### What is a clojure?
+
+    Any function where you are using a variable from outside of the scope is actually a closure. **Closures are nothing but functions with preserved data**.
+
+    ### Examples
+
+    Usually when you create a function in most programming languages you need to pass in some paramaters (arguments) or you define some inner variables. Let's look at a few basic examples below.
+    
+    <details>
+    <summary><b>Basic Example
+    </b></summary>
+    The following is a very simple function that takes in an argument, adds 2 to it, and returns the new value:
+
+    ```
+    let addTo = function (passed) {
+        let inner = 2;
+        return passed + inner;
+    };
+
+    console.log(addTo(3))
+    >>> 5
+    ``` 
+
+    Interestingly enough, in JavaScript you can actually access the variable withing passing in an argument. How? By assigning it as a `global` variable. Let's look at another example below:
+
+    ```
+    const passed = 3;
+
+    let addTo = function (passed) {
+        let inner = 2;
+        return passed + inner;
+    };
+
+    console.log(addTo())
+    >>> 5
+    ```
+
+    So, what does this have to do with closures? It may not look like it, but the above example is actually a very simple `closure`. JavaScript uses something called <a href="https://stackoverflow.com/questions/1047454/what-is-lexical-scope">lexical scoping</a>. What this means is that the variable `inner` is not available outside of the function scope, wheraes everything that is `global` is available anywhere in the code (including inside the function).
+
+    Let's take a look at the meta data surrounding our simple `addTo()` function:
+
+    ```
+    console.dir(addTo)
+    >>>
+    ```
+
+    If we run the following command and check the returned values (using Chrome Dev Tools or something of the like), we can see that under the functions `scope` there is a `closure` that containes our variabled `passed` with an assigned value of 3. This is how our above function `addTo()` utilizes closures to properly execute it's function. First it would check the functions' scope for the variable, if it cannot find it it will keep moving up the code until it does (and in this case it finds it globally). If it cannot find it, it will be undefined.
+
+    This was a very simple example of a `clojure` and not particularly useful outside of understand how clojures work, so let's look at a more complex example below.
+    </details>
+
+    <details>
+    <b><summary>Basic Example #2
+    </b></summary>
+
+    This is similar to our above example but we have broken it down into two functions, `addTo()` and `add()`.
+
+    ```
+    let addTo = function(passed) {
+
+        let add = function(inner) {
+            return passed + inner
+        };
+
+        return add;
+    };
+
+    let addThree = new addTo(3);
+    let addFour = new addTo(4);
+
+    // returns a clojure of 3 and 4, respectively
+    console.dir(addThree)
+    >>> 3
+    console.dir(addFour)
+    >>> 4
+
+    // we can easily create new functions and manipulate the results
+    console.log(addThree(1));
+    >>> 4
+    console.log(addFour(1));
+    >>> 5
+    ```
+
+    Within the `addTo()` function, we have another function called `add` that will return the sum of the inherited `passed` argument and the passed in `inner` argument. After `add()` exectues, `addTo()` finally returns `add()`, which is our value (`passed` + `inner`).
+
+    What this means is that we can create an unlimited amount of functions; `addToHundred`, `addToMillion`, etc. Closures keep the variable that is needed to execute (`3` in `addThree`, and `4` in `addFour`) and it preserves this variable inside the function as a property (`closure`). When you execute each successive function, like `addThree`, it uses that `closure` to do the calculations.
+    </details>
+
+    <a href="https://www.youtube.com/watch?v=71AtaJpJHw0&vl=en">source</a>
+    </details>
+
+    <details>
+    <summary><b>Working with npm
+    </b></summary>
+
+    * Installing as a production dependency (`--save`)
+        * `npm install --save express moment ...`
+    * Installing as a development-only dependency (`--save-dev`)
+        * `$ npm install --save-dev babel-cli babel-preset-env babel-watch ...`
+    * All source code gets downloaded to the newly created `node_modules` folder.
+    </details>
+
+    <details>
+    <summary><b>Working with Babel
+    </b></summary>
+
+    * When converting your JavaScript to ES5 (so that the node can understand it) using Babel, you will first need to establish a `.babelrc` file.
+        ```
+        {
+            "presets": ["env"]
+        }
+        ```
+    * Afterwards, you will need to add the following inside your `package.json` file, under the scripts section:
+        ```
+        "build": "babel server.js --out-dir build"
+        ```
+
+        ```
+        {
+        "name": "node_express_tutorial",
+        "version": "1.0.0",
+        "description": "node express tutorial",
+        "main": "index.js",
+        "scripts": {
+            "test": "echo \"Error: no test specified\" && exit 1",
+            "build": "babel server.js --out-dir build"
+        },
+        #################
+        # existing code #
+        #################
+        }
+        ```
+    * Finally, you will be able to run `npm build`. Afterwards execute the following command (from inside the build folder): `node build/server.js` in order to run your server succesfully.
+    * If you want to make any changes to the server, it will currently need to be re-built and restarted before any changes go live. In order to "hot-reload" our application, we can utilize babel-watch. Under the script section in our `package.json` let's add `"dev-start": "babel-watch server.js"` to our `package.json`.
+    * We can now use `npm run dev-start` to hot-reload and quickly test changes, without having to re-build our application every time.
+    </details>
+
+    <details>
+    <summary><b>Working with package.json
+    </b></summary>
+
+    * 
     </details>
 
     <details>
@@ -2037,6 +2498,95 @@ In the past, traditional DBMS's only support a data model consisting of a collec
 ### Summary
 
 ---
+
+### Setting up postgres
+
+1. Update brew.
+    * `brew update`
+2. Install postgres from source.
+    * `brew install postgres`
+3. Initialize the physical space on your hard-drive for the database.
+    * `initdb /usr/local/var/postgres`
+4. Start or stop the database server on demand.
+    * `pg_ctl -D /usr/local/var/postgres start`
+    * `pg_ctl -D /usr/local/var/postgres stop`
+    * `brew services start postgresql`
+    * `brew services stop postgresql`
+
+### Adding new users
+
+1. Create a user (default account have superuser privileges).
+    * `CREATE ROLE me WITH LOGIN PASSWORD 'pw';`
+2. Alter user to allow yourself to be able to create databases.
+    * `ALTER ROLE me CREATEDB;`
+3. Double-check things are setup correctly by running the `\du` command to list all roles & users.
+    * `\du`
+    ```
+                                       List of roles
+    Role name |                         Attributes                         | Member of 
+    -----------+------------------------------------------------------------+-----------
+    coop      | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+    me        | Create DB                                                  | {}
+    ```
+4. Exit out of the current default superuser and re-enter with our newly established `me` user.
+    * `\q`
+    * `psql -d postgres -U me`
+
+Instead of postgres=#, our prompt shows postgres=> now, meaning we're no longer logged in as a superuser.
+
+### Creating your database
+
+1. Use built-in shell scripts to create or drop database.
+    * `createdb expresstestdb`
+    * `dropdb expresstestdb`
+
+or
+
+2. Use `psql` to connect to our database and execute SQL statements.
+    * `CREATE DATABASE expresstestdb`
+    * `DELETE expresstestdb`
+    * `\conninfo` - Show the info for database, user and port for current the connection.
+    * `\list` - List all of your actual databases.
+    * `\c <database>` - Connect to another database.
+    * `\d` - List the relations of your currently connected database.
+    * `\d <table>` - Shows information for a specific table.
+    * <a href="https://www.postgresql.org/docs/10/app-psql.html">more commands</a>
+3. Connect to the newly created database.
+    * `\c expresstestdb`
+
+### Creating your tables
+
+1. The last thing we’ll do in the `psql` command prompt is create a table called userswith three fields - two `VARCHAR` types and an auto-incrementing `PRIMARY KEY` id.
+    ```
+    CREATE TABLE users (
+        ID SERIAL PRIMARY KEY,
+        name VARCHAR(30),
+        email VARCHAR(30)
+    );
+    ```
+2. Now, let's insert some sample data into our new table `users`:
+    ```
+    INSERT INTO users (name, email)
+        VALUES ('Jerry', 'jerry@example.com'), ('George', 'george@example.com');
+    ```
+3. Finally, check if our inserts are properly populated in the `users` table:
+    ```
+    SELECT * 
+    FROM users;
+    ```
+These steps create a blueprint for:
+
+* Installing postgres from source
+* Adding new users
+* Creating a new database
+* Adding in tables
+* Inserting in example values
+* Querying the table to see if our results have been populated.
+
+* <a href="* https://www.robinwieruch.de/postgres-express-setup-tutorial/">source</a>
+
+#
+
 </details>
 
 ## [8] **Web Apps and Servers**
@@ -2747,6 +3297,27 @@ This is commonly used in combination with a comparison operator:
 
         i++;
     }
+    ```
+</details>
+
+<details>
+<summary><b>Object Constructors & Classes
+</b></summary>
+
+* Python
+    ```
+    ```
+* JavaScript
+    ```
+    function Person(first, last, age, eye) {
+        this.firstName = first;
+        this.lastName = last;
+        this.age = age;
+        this.eyeColor = eye;
+    }
+
+    var myFather = new Person("John", "Doe", 50, "blue");
+    var myMother = new Person("Sally", "Rally", 48, "green");
     ```
 </details>
 
